@@ -1,0 +1,294 @@
+cmake_minimum_required (VERSION 2.8.6)
+PROJECT (HDF4 C CXX)
+
+#-----------------------------------------------------------------------------
+# Instructions for use : Normal Build
+#
+# For standard build of HDF4 examples.
+#-----------------------------------------------------------------------------
+IF (USE_SHARED_LIBS)
+  SET (BUILD_NAME_EXT "SHARED")
+ELSE (USE_SHARED_LIBS)
+  SET (BUILD_NAME_EXT "STATIC")
+ENDIF (USE_SHARED_LIBS)
+
+#-----------------------------------------------------------------------------
+# Allow Visual Studio solution directories
+#-----------------------------------------------------------------------------
+# Provide a way for Visual Studio Express users to turn OFF the new FOLDER
+# organization feature. Default to ON for non-Express users. Express users must
+# explicitly turn off this option to build HDF4 in the Express IDE...
+#
+OPTION (HDF4_USE_FOLDERS "Enable folder grouping of projects in IDEs." ON)
+MARK_AS_ADVANCED (HDF4_USE_FOLDERS)
+IF (HDF4_USE_FOLDERS)
+  SET_PROPERTY (GLOBAL PROPERTY USE_FOLDERS ON)
+ENDIF (HDF4_USE_FOLDERS)
+
+#-----------------------------------------------------------------------------
+# Define some CMake variables for use later in the project
+#-----------------------------------------------------------------------------
+SET (HDF4_RESOURCES_DIR       ${HDF4_SOURCE_DIR}/config/cmake)
+SET (HDF4_HDFSRC_DIR          ${HDF4_SOURCE_DIR}/hdf)
+SET (HDF4_HDF_FORTRAN_DIR     ${HDF4_SOURCE_DIR}/hdf/fortran)
+SET (HDF4_MFHDFSRC_DIR        ${HDF4_SOURCE_DIR}/mfhdf)
+SET (HDF4_MFHDF_FORTRAN_DIR   ${HDF4_SOURCE_DIR}/mfhdf/fortran)
+
+#-----------------------------------------------------------------------------
+# Include some macros for reusable code
+#-----------------------------------------------------------------------------
+INCLUDE (${HDF4_RESOURCES_DIR}/HDFMacros.cmake)
+INCLUDE (${HDF4_RESOURCES_DIR}/HDF4Macros.cmake)
+
+#-----------------------------------------------------------------------------
+# Setup output Directories
+#-----------------------------------------------------------------------------
+SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY
+    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all Executables."
+)
+SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY
+    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all Libraries"
+)
+SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all static libraries."
+)
+SET (CMAKE_Fortran_MODULE_DIRECTORY
+    ${PROJECT_BINARY_DIR}/bin/fortran CACHE PATH "Single Directory for all fortran modules."
+)
+
+#-----------------------------------------------------------------------------
+# Option to Build Static executables
+#-----------------------------------------------------------------------------
+OPTION (BUILD_STATIC_EXECS "Build Static Executabless" OFF)
+IF (BUILD_STATIC_EXECS)
+  IF (NOT WIN32)
+    SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static")
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
+  ENDIF (NOT WIN32)
+ENDIF (BUILD_STATIC_EXECS)
+
+#-----------------------------------------------------------------------------
+# When building utility executables that generate other (source) files :
+# we make use of the following variables defined in the root CMakeLists.
+# Certain systems may add /Debug or /Release to output paths
+# and we need to call the executable from inside the CMake configuration
+#-----------------------------------------------------------------------------
+SET (EXE_EXT "")
+IF (WIN32)
+  SET (EXE_EXT ".exe")
+  IF (NOT CYGWIN)
+    ADD_DEFINITIONS (-DBIND_TO_CURRENT_VCLIBS_VERSION=1)
+    ADD_DEFINITIONS (-D_CRT_SECURE_NO_WARNINGS)
+    ADD_DEFINITIONS (-D_CONSOLE)
+  ENDIF (NOT CYGWIN)
+ENDIF (WIN32)
+
+IF (MSVC)
+  SET (CMAKE_MFC_FLAG 0)
+ENDIF (MSVC)
+
+SET (MAKE_SYSTEM)
+IF (CMAKE_BUILD_TOOL MATCHES "make")
+  SET (MAKE_SYSTEM 1)
+ENDIF (CMAKE_BUILD_TOOL MATCHES "make")
+
+SET (CFG_INIT "/${CMAKE_CFG_INTDIR}")
+IF (MAKE_SYSTEM)
+  SET (CFG_INIT "")
+ENDIF (MAKE_SYSTEM)
+
+#-----------------------------------------------------------------------------
+# Compiler specific flags : Shouldn't there be compiler tests for these
+#-----------------------------------------------------------------------------
+IF (CMAKE_COMPILER_IS_GNUCC)
+  SET (CMAKE_C_FLAGS "${CMAKE_ANSI_CFLAGS} ${CMAKE_C_FLAGS} -std=c99 -fomit-frame-pointer -finline-functions -fno-common")
+ENDIF (CMAKE_COMPILER_IS_GNUCC)
+IF (CMAKE_COMPILER_IS_GNUCXX)
+  SET (CMAKE_CXX_FLAGS "${CMAKE_ANSI_CFLAGS} ${CMAKE_CXX_FLAGS} -fomit-frame-pointer -finline-functions -fno-common")
+ENDIF (CMAKE_COMPILER_IS_GNUCXX)
+
+#-----------------------------------------------------------------------------
+# HDF4 support
+#-----------------------------------------------------------------------------
+SET (CMAKE_MODULE_PATH ${HDF4_RESOURCES_DIR} ${CMAKE_MODULE_PATH})
+
+IF (NOT USE_SHARED_LIBS)
+  SET (HDF4_USE_STATIC_LIBRARIES 1)
+ENDIF (NOT USE_SHARED_LIBS)
+
+IF (NOT HDF4_HDF4_HEADER)
+  FIND_PACKAGE (HDF4)
+  IF (HDF4_FOUND)
+    SET (HDF4_HAVE_HDF_H 1)
+    SET (HDF4_HAVE_HDF4 1)
+    SET (HDF4_HDF4_HEADER "hdf.h")
+    SET (HDF4_INCLUDE_DIR_GEN ${HDF4_INCLUDE_DIR})
+    MESSAGE (STATUS "HDF4 found")
+    IF ((NOT USE_SHARED_LIBS AND HDF4_BUILD_SHARED_LIBS) OR (USE_SHARED_LIBS AND NOT HDF4_BUILD_SHARED_LIBS))
+      MESSAGE (STATUS "HDF4 build type does match requested type")
+    ENDIF ((NOT USE_SHARED_LIBS AND HDF4_BUILD_SHARED_LIBS) OR (USE_SHARED_LIBS AND NOT HDF4_BUILD_SHARED_LIBS))
+  ELSE (HDF4_FOUND)
+    MESSAGE (FATAL_ERROR " HDF4 is Required for HDF4 Examples")
+  ENDIF (HDF4_FOUND)
+ELSE (NOT HDF4_HDF4_HEADER)
+  # This project is being called from within another and HDF4 is already configured
+  SET (HDF4_HAVE_HDF_H 1)
+  SET (HDF4_HAVE_HDF4 1)
+ENDIF (NOT HDF4_HDF4_HEADER)
+IF (NOT HDF4_LIBRARY)
+  SET (HDF4_LIBRARY ${HDF4_LIBRARIES})
+ENDIF (NOT HDF4_LIBRARY)
+ADD_EXECUTABLE (hdp IMPORTED)
+IF (USE_SHARED_LIBS AND WIN32)
+  SET_PROPERTY (TARGET hdp PROPERTY IMPORTED_LOCATION "${HDF4_TOOLS_DIR}/hdpdll")
+ELSE (USE_SHARED_LIBS AND WIN32)
+  SET_PROPERTY (TARGET hdp PROPERTY IMPORTED_LOCATION "${HDF4_TOOLS_DIR}/hdp")
+ENDIF (USE_SHARED_LIBS AND WIN32)
+SET (HDF4_DUMP_EXECUTABLE $<TARGET_FILE:hdp>)
+SET (LINK_LIBS ${LINK_LIBS} ${HDF4_LIBRARIES})
+INCLUDE_DIRECTORIES (${HDF4_INCLUDE_DIRS})
+IF (HDF_BUILD_FORTRAN)
+  INCLUDE_DIRECTORIES (${HDF4_INCLUDE_DIR_FORTRAN})
+ENDIF (HDF_BUILD_FORTRAN)
+
+#-----------------------------------------------------------------------------
+# Option to use Shared/Static libs, default is static
+#-----------------------------------------------------------------------------
+SET (LIB_TYPE STATIC)
+IF (BUILD_SHARED_LIBS)
+  SET (LIB_TYPE SHARED)
+  SET (H4_BUILT_AS_DYNAMIC_LIB 1)
+ELSE (BUILD_SHARED_LIBS)
+  IF (NOT WIN32)
+    # should this be a user setting : Everyone uses it anyway ?
+    ADD_DEFINITIONS (-DPIC)
+  ENDIF (NOT WIN32)
+ENDIF (BUILD_SHARED_LIBS)
+
+#-----------------------------------------------------------------------------
+# Option to allow the user to disable compiler warnings
+#-----------------------------------------------------------------------------
+OPTION (HDF_DISABLE_COMPILER_WARNINGS "Disable compiler warnings" OFF)
+IF (HDF_DISABLE_COMPILER_WARNINGS)
+  # MSVC uses /w to suppress warnings.  It also complains if another
+  # warning level is given, so remove it.
+  IF (MSVC)
+    SET (HDF_WARNINGS_BLOCKED 1)
+    STRING (REGEX REPLACE "(^| )([/-])W[0-9]( |$)" " " CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+    SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /w")
+    STRING (REGEX REPLACE "(^| )([/-])W[0-9]( |$)" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w")
+  ENDIF (MSVC)
+  IF (WIN32 AND NOT CYGWIN)
+    ADD_DEFINITIONS (-D_CRT_SECURE_NO_WARNINGS)
+  ENDIF (WIN32 AND NOT CYGWIN)
+  # Borland uses -w- to suppress warnings.
+  IF (BORLAND)
+    SET (HDF_WARNINGS_BLOCKED 1)
+    SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w-")
+  ENDIF (BORLAND)
+
+  # Most compilers use -w to suppress warnings.
+  IF (NOT HDF_WARNINGS_BLOCKED)
+    SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
+    SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+  ENDIF (NOT HDF_WARNINGS_BLOCKED)
+ENDIF (HDF_DISABLE_COMPILER_WARNINGS)
+
+#-----------------------------------------------------------------------------
+# This is in here to help some of the GCC based IDES like Eclipse
+# and code blocks parse the compiler errors and warnings better.
+#-----------------------------------------------------------------------------
+IF (CMAKE_COMPILER_IS_GNUCC)
+  SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fmessage-length=0")
+ENDIF (CMAKE_COMPILER_IS_GNUCC)
+IF (CMAKE_COMPILER_IS_GNUCXX)
+  SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmessage-length=0")
+ENDIF (CMAKE_COMPILER_IS_GNUCXX)
+
+#-----------------------------------------------------------------------------
+# All examples need the main include directories
+#-----------------------------------------------------------------------------
+INCLUDE_DIRECTORIES (${HDF4_BINARY_DIR})
+
+#-----------------------------------------------------------------------------
+# Option to Enable MPI Parallel
+#-----------------------------------------------------------------------------
+SET (CMAKE_MODULE_PATH ${HDF4_RESOURCES_DIR} ${CMAKE_MODULE_PATH})
+OPTION (HDF_ENABLE_PARALLEL "Enable parallel build (requires MPI)" OFF)
+IF (HDF_ENABLE_PARALLEL)
+  INCLUDE (FindMPI)
+  INCLUDE_DIRECTORIES (${MPI_INCLUDE_PATH})
+  IF (MPI_FOUND)
+    SET (H4_HAVE_PARALLEL 1)
+    # MPI checks, only do these if MPI_FOUND is true, otherwise they always fail
+    # and once set, they are cached as false and not regenerated
+    SET (CMAKE_REQUIRED_LIBRARIES "${MPI_LIBRARY};${MPI_EXTRA_LIBRARY}" )
+    CHECK_FUNCTION_EXISTS (MPI_File_get_size H4_HAVE_MPI_GET_SIZE) 
+    # Used by Fortran + MPI
+    CHECK_SYMBOL_EXISTS (MPI_Comm_c2f "${MPI_INCLUDE_PATH}/mpi.h"  H4_HAVE_MPI_MULTI_LANG_Comm)
+    CHECK_SYMBOL_EXISTS (MPI_Info_c2f "${MPI_INCLUDE_PATH}/mpi.h"  H4_HAVE_MPI_MULTI_LANG_Info)
+  ENDIF (MPI_FOUND)
+ENDIF (HDF_ENABLE_PARALLEL)
+
+# Parallel IO usage requires MPI to be Linked and Included
+IF (H4_HAVE_PARALLEL)
+  SET (LINK_LIBS ${LINK_LIBS} ${MPI_LIBRARY})
+  IF (MPI_LINK_FLAGS)
+    SET (CMAKE_EXE_LINKER_FLAGS ${MPI_LINK_FLAGS} ${CMAKE_EXE_LINKER_FLAGS})
+  ENDIF (MPI_LINK_FLAGS)
+  IF (MPI_EXTRA_LIBRARY)
+    SET (LINK_LIBS ${LINK_LIBS} ${MPI_EXTRA_LIBRARY})
+  ENDIF (MPI_EXTRA_LIBRARY)
+ENDIF (H4_HAVE_PARALLEL)
+
+#-----------------------------------------------------------------------------
+# Build utility to copy and strip X lines of file
+#-----------------------------------------------------------------------------
+IF (BUILD_TESTING)
+  SET (XLATE_UTILITY "xlatefile")
+  ADD_EXECUTABLE(${XLATE_UTILITY} ${HDF4_RESOURCES_DIR}/xlatefile.c)
+ENDIF (BUILD_TESTING)
+
+#-----------------------------------------------------------------------------
+# Dashboard and Testing Settings
+#-----------------------------------------------------------------------------
+OPTION (BUILD_TESTING "Build HDF4 Example Testing" OFF)
+IF (BUILD_TESTING)
+  SET (DART_TESTING_TIMEOUT 1200
+      CACHE INTEGER
+      "Timeout in seconds for each test (default 1200=20minutes)"
+  )
+  ENABLE_TESTING ()
+  INCLUDE (CTest)
+  INCLUDE (${HDF4_SOURCE_DIR}/CTestConfig.cmake)
+  CONFIGURE_FILE (${HDF4_RESOURCES_DIR}/CTestCustom.cmake ${HDF4_BINARY_DIR}/CTestCustom.ctest @ONLY)
+ENDIF (BUILD_TESTING)
+
+#-----------------------------------------------------------------------------
+# Build examples
+#-----------------------------------------------------------------------------
+ADD_SUBDIRECTORY (${HDF4_SOURCE_DIR}/hdf/examples     ${PROJECT_BINARY_DIR}/hdf/examples)
+ADD_SUBDIRECTORY (${HDF4_SOURCE_DIR}/mfhdf/examples   ${PROJECT_BINARY_DIR}/mfhdf/examples)
+
+#-----------------------------------------------------------------------------
+# Option to build Fortran examples
+# Make sure this appears before the CONFIGURE_FILE step
+# so that fortran name mangling is detected before writing H4config.h
+#-----------------------------------------------------------------------------
+# Set default name mangling : overridden by Fortran detection in fortran dir
+SET (H4_F77_FUNC "H4_F77_FUNC(name,NAME) name ## _")
+SET (H4_F77_FUNC_ "H4_F77_FUNC_(name,NAME) name ## __")
+IF (EXISTS "${HDF4_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${HDF4_SOURCE_DIR}/mfhdf/fortran")
+  OPTION (HDF4_BUILD_FORTRAN "Build FORTRAN support" ON)
+  IF (HDF4_BUILD_FORTRAN)
+    IF (WIN32 AND NOT CYGWIN)
+      SET (H4_F77_FUNC "H4_F77_FUNC(name,NAME) NAME")
+      SET (H4_F77_FUNC_ "H4_F77_FUNC_(name,NAME) NAME")
+    ENDIF (WIN32 AND NOT CYGWIN)
+    INCLUDE (${HDF4_RESOURCES_DIR}/HDF4UseFortran.cmake)
+    ADD_SUBDIRECTORY (${HDF4_SOURCE_DIR}/mfhdf/fortran ${PROJECT_BINARY_DIR}/mfhdf/fortran)
+    ADD_SUBDIRECTORY (${HDF4_SOURCE_DIR}/hdf/fortran ${PROJECT_BINARY_DIR}/hdf/fortran)
+  ENDIF (HDF4_BUILD_FORTRAN)
+ENDIF (EXISTS "${HDF4_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${HDF4_SOURCE_DIR}/mfhdf/fortran")
+  
