@@ -1,7 +1,6 @@
 * text=auto !eol
 /CMakeLists.txt -text
 /CTestConfig.cmake -text
-config/cmake/CTest.cmake -text
 config/cmake/CTestCustom.cmake -text
 config/cmake/FindHDF4.cmake -text
 config/cmake/FindMPI.cmake -text
