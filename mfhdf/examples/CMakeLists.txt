@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8.6)
-PROJECT (HDF4_MFHDF_EXAMPLES)
+PROJECT (HDF4Examples_MFHDF)
 
 #-----------------------------------------------------------------------------
 # Define Sources
@@ -45,7 +45,7 @@ IF (BUILD_TESTING)
 ENDIF (BUILD_TESTING)
 
 FOREACH (example ${examples})
-  ADD_EXECUTABLE (mf_${example} ${HDF4_MFHDF_EXAMPLES_SOURCE_DIR}/${example}.c)
+  ADD_EXECUTABLE (mf_${example} ${PROJECT_SOURCE_DIR}/${example}.c)
   TARGET_NAMING (mf_${example} ${LIB_TYPE})
   TARGET_LINK_LIBRARIES (mf_${example} ${LINK_LIBS})
   IF (BUILD_TESTING)

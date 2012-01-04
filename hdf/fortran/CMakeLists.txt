@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8.6)
-PROJECT (HDF4_HDF_FORTRAN_EXAMPLES C CXX Fortran)
+PROJECT (HDF4Examples_HDF_FORTRAN C CXX Fortran)
 # --------------------------------------------------------------------
 # Notes: When creating examples they should be prefixed
 # with "f_ex_". This allows for easier filtering of the examples.
@@ -20,7 +20,6 @@ ENDIF (CMAKE_Fortran_COMPILER MATCHES ifort)
 #-----------------------------------------------------------------------------
 INCLUDE_DIRECTORIES (
     ${CMAKE_Fortran_MODULE_DIRECTORY}
-    ${HDF4_HDF_BINARY_DIR}
     ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
@@ -85,7 +84,7 @@ IF (BUILD_TESTING)
 ENDIF (BUILD_TESTING)
 
 FOREACH (example ${examples})
-  ADD_EXECUTABLE (f_ex_${example} ${HDF4_HDF_FORTRAN_EXAMPLES_SOURCE_DIR}/${example}.f)
+  ADD_EXECUTABLE (f_ex_${example} ${PROJECT_SOURCE_DIR}/${example}.f)
   TARGET_NAMING (f_ex_${example} ${LIB_TYPE})
   TARGET_FORTRAN_WIN_PROPERTIES (f_ex_${example} "")
   SET_TARGET_PROPERTIES (f_ex_${example} PROPERTIES LINKER_LANGUAGE Fortran)
@@ -101,7 +100,7 @@ FOREACH (example ${examples})
   ENDIF (BUILD_TESTING)
 ENDFOREACH (example ${examples})
 
-ADD_EXECUTABLE (f_ex_VG_add_sds_to_vgroup ${HDF4_HDF_FORTRAN_EXAMPLES_SOURCE_DIR}/VG_add_sds_to_vgroup.f)
+ADD_EXECUTABLE (f_ex_VG_add_sds_to_vgroup ${PROJECT_SOURCE_DIR}/VG_add_sds_to_vgroup.f)
 TARGET_NAMING (f_ex_VG_add_sds_to_vgroup ${LIB_TYPE})
 TARGET_FORTRAN_WIN_PROPERTIES (f_ex_VG_add_sds_to_vgroup "")
 SET_TARGET_PROPERTIES (f_ex_VG_add_sds_to_vgroup PROPERTIES LINKER_LANGUAGE Fortran)
@@ -118,7 +117,7 @@ IF (BUILD_TESTING)
 ENDIF (BUILD_TESTING)
 
 FOREACH (example ${skip_examples})
-  ADD_EXECUTABLE (f_ex_${example} ${HDF4_HDF_FORTRAN_EXAMPLES_SOURCE_DIR}/${example}.f)
+  ADD_EXECUTABLE (f_ex_${example} ${PROJECT_SOURCE_DIR}/${example}.f)
   TARGET_NAMING (f_ex_${example} ${LIB_TYPE})
   TARGET_FORTRAN_WIN_PROPERTIES (f_ex_${example} "")
   SET_TARGET_PROPERTIES (f_ex_${example} PROPERTIES LINKER_LANGUAGE Fortran)

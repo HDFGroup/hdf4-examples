@@ -3,14 +3,13 @@ cmake_minimum_required (VERSION 2.8.6)
 # Notes: When creating examples they should be prefixed
 # with "f_ex_". This allows for easier filtering of the examples.
 # --------------------------------------------------------------------
-PROJECT (HDF4_MFHDF_FORTRAN_EXAMPLES C CXX Fortran)
+PROJECT (HDF4Examples_MFHDF_FORTRAN C CXX Fortran)
 
 #-----------------------------------------------------------------------------
 # Setup include Directories
 #-----------------------------------------------------------------------------
 INCLUDE_DIRECTORIES (
     ${CMAKE_Fortran_MODULE_DIRECTORY}
-    ${HDF4_HDF_BINARY_DIR}
     ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
@@ -56,7 +55,7 @@ IF (BUILD_TESTING)
 ENDIF (BUILD_TESTING)
 
 FOREACH (example ${examples})
-  ADD_EXECUTABLE (f_exmf_${example} ${HDF4_MFHDF_FORTRAN_EXAMPLES_SOURCE_DIR}/${example}.f)
+  ADD_EXECUTABLE (f_exmf_${example} ${PROJECT_SOURCE_DIR}/${example}.f)
   TARGET_NAMING (f_exmf_${example} ${LIB_TYPE})
   TARGET_FORTRAN_WIN_PROPERTIES (f_exmf_${example} "")
   SET_TARGET_PROPERTIES (f_exmf_${example} PROPERTIES LINKER_LANGUAGE Fortran)
@@ -72,7 +71,7 @@ FOREACH (example ${examples})
 ENDFOREACH (example ${examples})
 
 FOREACH (example ${skip_examples})
-  ADD_EXECUTABLE (f_exmf_${example} ${HDF4_MFHDF_FORTRAN_EXAMPLES_SOURCE_DIR}/${example}.f)
+  ADD_EXECUTABLE (f_exmf_${example} ${PROJECT_SOURCE_DIR}/${example}.f)
   TARGET_NAMING (f_exmf_${example} ${LIB_TYPE})
   TARGET_FORTRAN_WIN_PROPERTIES (f_exmf_${example} "")
   SET_TARGET_PROPERTIES (f_exmf_${example} PROPERTIES LINKER_LANGUAGE Fortran)

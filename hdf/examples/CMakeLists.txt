@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8.6)
-PROJECT (HDF4_HDF_EXAMPLES C CXX)
+PROJECT (HDF4Examples_HDF C CXX)
 
 #-----------------------------------------------------------------------------
 # Define Sources
@@ -57,7 +57,7 @@ IF (BUILD_TESTING)
 ENDIF (BUILD_TESTING)
 
 FOREACH (example ${examples})
-  ADD_EXECUTABLE (hdf_${example} ${HDF4_HDF_EXAMPLES_SOURCE_DIR}/${example}.c)
+  ADD_EXECUTABLE (hdf_${example} ${PROJECT_SOURCE_DIR}/${example}.c)
   TARGET_NAMING (hdf_${example} ${LIB_TYPE})
   TARGET_LINK_LIBRARIES (hdf_${example} ${LINK_LIBS})
   IF (BUILD_TESTING)
@@ -71,7 +71,7 @@ FOREACH (example ${examples})
   ENDIF (BUILD_TESTING)
 ENDFOREACH (example ${examples})
 
-ADD_EXECUTABLE (hdf_VG_add_sds_to_vgroup ${HDF4_HDF_EXAMPLES_SOURCE_DIR}/VG_add_sds_to_vgroup.c)
+ADD_EXECUTABLE (hdf_VG_add_sds_to_vgroup ${PROJECT_SOURCE_DIR}/VG_add_sds_to_vgroup.c)
 TARGET_NAMING (hdf_VG_add_sds_to_vgroup ${LIB_TYPE})
 TARGET_LINK_LIBRARIES (hdf_VG_add_sds_to_vgroup ${LINK_LIBS})
 IF (BUILD_TESTING)

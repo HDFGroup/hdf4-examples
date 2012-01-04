@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8.6)
-PROJECT (HDF4 C CXX)
+PROJECT (HDF4Examples C CXX)
 
 #-----------------------------------------------------------------------------
 # Instructions for use : Normal Build
@@ -23,17 +23,17 @@ ENDIF (HDF4_USE_FOLDERS)
 #-----------------------------------------------------------------------------
 # Define some CMake variables for use later in the project
 #-----------------------------------------------------------------------------
-SET (HDF4_RESOURCES_DIR       ${HDF4_SOURCE_DIR}/config/cmake)
-SET (HDF4_HDFSRC_DIR          ${HDF4_SOURCE_DIR}/hdf)
-SET (HDF4_HDF_FORTRAN_DIR     ${HDF4_SOURCE_DIR}/hdf/fortran)
-SET (HDF4_MFHDFSRC_DIR        ${HDF4_SOURCE_DIR}/mfhdf)
-SET (HDF4_MFHDF_FORTRAN_DIR   ${HDF4_SOURCE_DIR}/mfhdf/fortran)
+SET (HDF4EX_RESOURCES_DIR       ${PROJECT_SOURCE_DIR}/config/cmake)
+SET (HDF4EX_HDFSRC_DIR          ${PROJECT_SOURCE_DIR}/hdf)
+SET (HDF4EX_HDF_FORTRAN_DIR     ${PROJECT_SOURCE_DIR}/hdf/fortran)
+SET (HDF4EX_MFHDFSRC_DIR        ${PROJECT_SOURCE_DIR}/mfhdf)
+SET (HDF4EX_MFHDF_FORTRAN_DIR   ${PROJECT_SOURCE_DIR}/mfhdf/fortran)
 
 #-----------------------------------------------------------------------------
 # Include some macros for reusable code
 #-----------------------------------------------------------------------------
-INCLUDE (${HDF4_RESOURCES_DIR}/HDFMacros.cmake)
-INCLUDE (${HDF4_RESOURCES_DIR}/HDF4Macros.cmake)
+INCLUDE (${HDF4EX_RESOURCES_DIR}/HDFMacros.cmake)
+INCLUDE (${HDF4EX_RESOURCES_DIR}/HDF4Macros.cmake)
 
 #-----------------------------------------------------------------------------
 # Setup output Directories
@@ -105,7 +105,7 @@ ENDIF (CMAKE_COMPILER_IS_GNUCXX)
 #-----------------------------------------------------------------------------
 # HDF4 support
 #-----------------------------------------------------------------------------
-SET (CMAKE_MODULE_PATH ${HDF4_RESOURCES_DIR} ${CMAKE_MODULE_PATH})
+SET (CMAKE_MODULE_PATH ${HDF4EX_RESOURCES_DIR} ${CMAKE_MODULE_PATH})
 
 IF (NOT USE_SHARED_LIBS)
   SET (HDF4_USE_STATIC_LIBRARIES 1)
@@ -204,12 +204,12 @@ ENDIF (CMAKE_COMPILER_IS_GNUCXX)
 #-----------------------------------------------------------------------------
 # All examples need the main include directories
 #-----------------------------------------------------------------------------
-INCLUDE_DIRECTORIES (${HDF4_BINARY_DIR})
+INCLUDE_DIRECTORIES (${PROJECT_BINARY_DIR})
 
 #-----------------------------------------------------------------------------
 # Option to Enable MPI Parallel
 #-----------------------------------------------------------------------------
-SET (CMAKE_MODULE_PATH ${HDF4_RESOURCES_DIR} ${CMAKE_MODULE_PATH})
+SET (CMAKE_MODULE_PATH ${HDF4EX_RESOURCES_DIR} ${CMAKE_MODULE_PATH})
 OPTION (HDF_ENABLE_PARALLEL "Enable parallel build (requires MPI)" OFF)
 IF (HDF_ENABLE_PARALLEL)
   INCLUDE (FindMPI)
@@ -242,7 +242,7 @@ ENDIF (H4_HAVE_PARALLEL)
 #-----------------------------------------------------------------------------
 IF (BUILD_TESTING)
   SET (XLATE_UTILITY "xlatefile")
-  ADD_EXECUTABLE(${XLATE_UTILITY} ${HDF4_RESOURCES_DIR}/xlatefile.c)
+  ADD_EXECUTABLE(${XLATE_UTILITY} ${HDF4EX_RESOURCES_DIR}/xlatefile.c)
 ENDIF (BUILD_TESTING)
 
 #-----------------------------------------------------------------------------
@@ -256,15 +256,15 @@ IF (BUILD_TESTING)
   )
   ENABLE_TESTING ()
   INCLUDE (CTest)
-  INCLUDE (${HDF4_SOURCE_DIR}/CTestConfig.cmake)
-  CONFIGURE_FILE (${HDF4_RESOURCES_DIR}/CTestCustom.cmake ${HDF4_BINARY_DIR}/CTestCustom.ctest @ONLY)
+  INCLUDE (${PROJECT_SOURCE_DIR}/CTestConfig.cmake)
+  CONFIGURE_FILE (${HDF4EX_RESOURCES_DIR}/CTestCustom.cmake ${PROJECT_BINARY_DIR}/CTestCustom.ctest @ONLY)
 ENDIF (BUILD_TESTING)
 
 #-----------------------------------------------------------------------------
 # Build examples
 #-----------------------------------------------------------------------------
-ADD_SUBDIRECTORY (${HDF4_SOURCE_DIR}/hdf/examples     ${PROJECT_BINARY_DIR}/hdf/examples)
-ADD_SUBDIRECTORY (${HDF4_SOURCE_DIR}/mfhdf/examples   ${PROJECT_BINARY_DIR}/mfhdf/examples)
+ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/hdf/examples     ${PROJECT_BINARY_DIR}/hdf/examples)
+ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/mfhdf/examples   ${PROJECT_BINARY_DIR}/mfhdf/examples)
 
 #-----------------------------------------------------------------------------
 # Option to build Fortran examples
@@ -274,16 +274,16 @@ ADD_SUBDIRECTORY (${HDF4_SOURCE_DIR}/mfhdf/examples   ${PROJECT_BINARY_DIR}/mfhd
 # Set default name mangling : overridden by Fortran detection in fortran dir
 SET (H4_F77_FUNC "H4_F77_FUNC(name,NAME) name ## _")
 SET (H4_F77_FUNC_ "H4_F77_FUNC_(name,NAME) name ## __")
-IF (EXISTS "${HDF4_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${HDF4_SOURCE_DIR}/mfhdf/fortran")
+IF (EXISTS "${PROJECT_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${PROJECT_SOURCE_DIR}/mfhdf/fortran")
   OPTION (HDF4_BUILD_FORTRAN "Build FORTRAN support" ON)
   IF (HDF4_BUILD_FORTRAN)
     IF (WIN32 AND NOT CYGWIN)
       SET (H4_F77_FUNC "H4_F77_FUNC(name,NAME) NAME")
       SET (H4_F77_FUNC_ "H4_F77_FUNC_(name,NAME) NAME")
     ENDIF (WIN32 AND NOT CYGWIN)
-    INCLUDE (${HDF4_RESOURCES_DIR}/HDF4UseFortran.cmake)
-    ADD_SUBDIRECTORY (${HDF4_SOURCE_DIR}/mfhdf/fortran ${PROJECT_BINARY_DIR}/mfhdf/fortran)
-    ADD_SUBDIRECTORY (${HDF4_SOURCE_DIR}/hdf/fortran ${PROJECT_BINARY_DIR}/hdf/fortran)
+    INCLUDE (${HDF4EX_RESOURCES_DIR}/HDF4UseFortran.cmake)
+    ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/mfhdf/fortran ${PROJECT_BINARY_DIR}/mfhdf/fortran)
+    ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/hdf/fortran ${PROJECT_BINARY_DIR}/hdf/fortran)
   ENDIF (HDF4_BUILD_FORTRAN)
-ENDIF (EXISTS "${HDF4_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${HDF4_SOURCE_DIR}/mfhdf/fortran")
+ENDIF (EXISTS "${PROJECT_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${PROJECT_SOURCE_DIR}/mfhdf/fortran")
   
