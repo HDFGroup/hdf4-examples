@@ -10,32 +10,32 @@ DEFINES=-DNDEBUG -DHDF
 ##                          Programs to build                              ##
 #############################################################################
 
-TEST_PROG = VD_create_vdatas VD_write_mixed_vdata       \
-	VD_write_to_vdata VD_create_onefield_vdatas         \
-	VD_read_from_vdata VD_read_mixed_vdata              \
-	VD_get_vdata_info VD_locate_vdata VG_create_vgroup  \
-	VG_add_sds_to_vgroup VG_insert_vdatas_to_vgroup     \
-	VG_set_get_vgroup_attr VG_vgroup_contents           \
-	VG_get_vgroup_info GR_create_and_write_image        \
-	GR_modify_image GR_set_attribute GR_get_attribute   \
-	GR_write_palette GR_image_info GR_read_image        \
-	AN_create_annotation AN_get_annotation_info AN_read_annotation
-    # VD_set_get_vdata_attr
+TEST_PROG = h4ex_VD_create_vdatas h4ex_VD_write_mixed_vdata       \
+	h4ex_VD_write_to_vdata h4ex_VD_create_onefield_vdatas         \
+	h4ex_VD_read_from_vdata h4ex_VD_read_mixed_vdata              \
+	h4ex_VD_get_vdata_info h4ex_VD_locate_vdata h4ex_VG_create_vgroup  \
+	h4ex_VG_add_sds_to_vgroup h4ex_VG_insert_vdatas_to_vgroup     \
+	h4ex_VG_set_get_vgroup_attr h4ex_VG_vgroup_contents           \
+	h4ex_VG_get_vgroup_info h4ex_GR_create_and_write_image        \
+	h4ex_GR_modify_image h4ex_GR_set_attribute h4ex_GR_get_attribute   \
+	h4ex_GR_write_palette h4ex_GR_image_info h4ex_GR_read_image        \
+	h4ex_AN_create_annotation h4ex_AN_get_annotation_info h4ex_AN_read_annotation
+    # h4ex_VD_set_get_vdata_attr
 
 # These are the Fortran example files to be installed
-INSTALL_FILES= VD_read_from_vdata.f VD_read_mixed_vdata.f \
-	VD_write_mixed_vdata.f VD_write_to_vdata.f            \
-	VD_create_onefield_vdatas.f VD_create_vdatas.f        \
-	VD_get_vdata_info.f VD_locate_vdata.f                 \
-	VG_insert_vdatas_to_vgroup.f VG_set_get_vgroup_attr.f \
-	VG_vgroup_contents.f VG_add_sds_to_vgroup.f           \
-	VG_create_vgroup.f VG_get_vgroup_info.f               \
-	GR_create_and_write_image.f GR_get_attribute.f        \
-	GR_image_info.f GR_modify_image.f GR_read_image.f     \
-	GR_read_palette.f GR_set_attribute.f                  \
-	GR_write_palette.f AN_create_annotation.f             \
-	AN_get_annotation_info.f AN_read_annotation.f         \
-	#VD_set_get_vdata_attr.f
+INSTALL_FILES= h4ex_VD_read_from_vdata.f h4ex_VD_read_mixed_vdata.f \
+	h4ex_VD_write_mixed_vdata.f h4ex_VD_write_to_vdata.f            \
+	h4ex_VD_create_onefield_vdatas.f h4ex_VD_create_vdatas.f        \
+	h4ex_VD_get_vdata_info.f h4ex_VD_locate_vdata.f                 \
+	h4ex_VG_insert_vdatas_to_vgroup.f h4ex_VG_set_get_vgroup_attr.f \
+	h4ex_VG_vgroup_contents.f h4ex_VG_add_sds_to_vgroup.f           \
+	h4ex_VG_create_vgroup.f h4ex_VG_get_vgroup_info.f               \
+	h4ex_GR_create_and_write_image.f h4ex_GR_get_attribute.f        \
+	h4ex_GR_image_info.f h4ex_GR_modify_image.f h4ex_GR_read_image.f     \
+	h4ex_GR_read_palette.f h4ex_GR_set_attribute.f                  \
+	h4ex_GR_write_palette.f h4ex_AN_create_annotation.f             \
+	h4ex_AN_get_annotation_info.f h4ex_AN_read_annotation.f         \
+	#h4ex_VD_set_get_vdata_attr.f
 
 # Where to install Fortran example files
 EXAMPLEDIR=$(prefix)/examples/fortran
@@ -49,32 +49,32 @@ $(EXTRA_PROG): $(H4FC)
 # will try to build them with the normal Fortran compiler, not h4fc.
 
 # Fortran Programs
-VD_read_from_vdata: $(srcdir)/VD_read_from_vdata.f
-VD_read_mixed_vdata: $(srcdir)/VD_read_mixed_vdata.f
-#VD_set_get_vdata_attr: $(srcdir)/VD_set_get_vdata_attr.f
-VD_write_mixed_vdata: $(srcdir)/VD_write_mixed_vdata.f
-VD_write_to_vdata: $(srcdir)/VD_write_to_vdata.f
-VD_create_onefield_vdatas: $(srcdir)/VD_create_onefield_vdatas.f
-VD_create_vdatas: $(srcdir)/VD_create_vdatas.f
-VD_get_vdata_info: $(srcdir)/VD_get_vdata_info.f
-VD_locate_vdata: $(srcdir)/VD_locate_vdata.f
-VG_insert_vdatas_to_vgroup: $(srcdir)/VG_insert_vdatas_to_vgroup.f
-VG_set_get_vgroup_attr: $(srcdir)/VG_set_get_vgroup_attr.f
-VG_vgroup_contents: $(srcdir)/VG_vgroup_contents.f
-VG_add_sds_to_vgroup: $(srcdir)/VG_add_sds_to_vgroup.f
-VG_create_vgroup: $(srcdir)/VG_create_vgroup.f
-VG_get_vgroup_info: $(srcdir)/VG_get_vgroup_info.f
-GR_create_and_write_image: $(srcdir)/GR_create_and_write_image.f
-GR_get_attribute: $(srcdir)/GR_get_attribute.f
-GR_image_info: $(srcdir)/GR_image_info.f
-GR_modify_image: $(srcdir)/GR_modify_image.f
-GR_read_image: $(srcdir)/GR_read_image.f
-GR_read_palette: $(srcdir)/GR_read_palette.f
-GR_set_attribute: $(srcdir)/GR_set_attribute.f
-GR_write_palette: $(srcdir)/GR_write_palette.f
-AN_create_annotation: $(srcdir)/AN_create_annotation.f
-AN_get_annotation_info: $(srcdir)/AN_get_annotation_info.f
-AN_read_annotation: $(srcdir)/AN_read_annotation.f
+h4ex_VD_read_from_vdata: $(srcdir)/h4ex_VD_read_from_vdata.f
+h4ex_VD_read_mixed_vdata: $(srcdir)/h4ex_VD_read_mixed_vdata.f
+#h4ex_VD_set_get_vdata_attr: $(srcdir)/h4ex_VD_set_get_vdata_attr.f
+h4ex_VD_write_mixed_vdata: $(srcdir)/h4ex_VD_write_mixed_vdata.f
+h4ex_VD_write_to_vdata: $(srcdir)/h4ex_VD_write_to_vdata.f
+h4ex_VD_create_onefield_vdatas: $(srcdir)/h4ex_VD_create_onefield_vdatas.f
+h4ex_VD_create_vdatas: $(srcdir)/h4ex_VD_create_vdatas.f
+h4ex_VD_get_vdata_info: $(srcdir)/h4ex_VD_get_vdata_info.f
+h4ex_VD_locate_vdata: $(srcdir)/h4ex_VD_locate_vdata.f
+h4ex_VG_insert_vdatas_to_vgroup: $(srcdir)/h4ex_VG_insert_vdatas_to_vgroup.f
+h4ex_VG_set_get_vgroup_attr: $(srcdir)/h4ex_VG_set_get_vgroup_attr.f
+h4ex_VG_vgroup_contents: $(srcdir)/h4ex_VG_vgroup_contents.f
+h4ex_VG_add_sds_to_vgroup: $(srcdir)/h4ex_VG_add_sds_to_vgroup.f
+h4ex_VG_create_vgroup: $(srcdir)/h4ex_VG_create_vgroup.f
+h4ex_VG_get_vgroup_info: $(srcdir)/h4ex_VG_get_vgroup_info.f
+h4ex_GR_create_and_write_image: $(srcdir)/h4ex_GR_create_and_write_image.f
+h4ex_GR_get_attribute: $(srcdir)/h4ex_GR_get_attribute.f
+h4ex_GR_image_info: $(srcdir)/h4ex_GR_image_info.f
+h4ex_GR_modify_image: $(srcdir)/h4ex_GR_modify_image.f
+h4ex_GR_read_image: $(srcdir)/h4ex_GR_read_image.f
+h4ex_GR_read_palette: $(srcdir)/h4ex_GR_read_palette.f
+h4ex_GR_set_attribute: $(srcdir)/h4ex_GR_set_attribute.f
+h4ex_GR_write_palette: $(srcdir)/h4ex_GR_write_palette.f
+h4ex_AN_create_annotation: $(srcdir)/h4ex_AN_create_annotation.f
+h4ex_AN_get_annotation_info: $(srcdir)/h4ex_AN_get_annotation_info.f
+h4ex_AN_read_annotation: $(srcdir)/h4ex_AN_read_annotation.f
 
 include $(top_srcdir)/config/examples.am
 include $(top_srcdir)/config/conclude.am

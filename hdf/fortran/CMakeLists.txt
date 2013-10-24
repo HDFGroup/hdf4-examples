@@ -27,37 +27,38 @@ INCLUDE_DIRECTORIES (
 # Define Sources
 #-----------------------------------------------------------------------------
 SET (examples
-    VD_create_vdatas 
-    VD_write_mixed_vdata
-    VD_write_to_vdata 
-    VD_create_onefield_vdatas
-    VD_read_from_vdata 
-    VD_read_mixed_vdata
-    VD_get_vdata_info 
-    VD_locate_vdata 
-    VG_create_vgroup
-#    VG_add_sds_to_vgroup 
-    VG_insert_vdatas_to_vgroup
-    VG_set_get_vgroup_attr 
-    VG_vgroup_contents
-    VG_get_vgroup_info 
-    GR_create_and_write_image
-    GR_modify_image 
-    GR_set_attribute 
-    GR_get_attribute
-    GR_write_palette 
-    GR_image_info 
-    GR_read_image
-    AN_create_annotation 
-    AN_get_annotation_info 
-    AN_read_annotation
-    #VD_set_get_vdata_attr
+    h4ex_VD_create_vdatas 
+    h4ex_VD_write_mixed_vdata
+    h4ex_VD_write_to_vdata 
+    h4ex_VD_create_onefield_vdatas
+    h4ex_VD_read_from_vdata 
+    h4ex_VD_read_mixed_vdata
+    h4ex_VD_get_vdata_info 
+    h4ex_VD_locate_vdata 
+    h4ex_VG_create_vgroup
+#    h4ex_VG_add_sds_to_vgroup 
+    h4ex_VG_insert_vdatas_to_vgroup
+    h4ex_VG_set_get_vgroup_attr 
+    h4ex_VG_vgroup_contents
+    h4ex_VG_get_vgroup_info 
+    h4ex_GR_create_and_write_image
+    h4ex_GR_create_and_write_chunked_image
+    h4ex_GR_modify_image 
+    h4ex_GR_set_attribute 
+    h4ex_GR_get_attribute
+    h4ex_GR_write_palette 
+    h4ex_GR_image_info 
+    h4ex_GR_read_image
+    h4ex_AN_create_annotation 
+    h4ex_AN_get_annotation_info 
+    h4ex_AN_read_annotation
+    #h4ex_VD_set_get_vdata_attr
 )
 SET (mf_examples
-    VG_add_sds_to_vgroup
+    h4ex_VG_add_sds_to_vgroup
 )
 SET (skip_examples
-    VD_set_get_vdata_attr
+    h4ex_VD_set_get_vdata_attr
 )
 
 IF (BUILD_TESTING)
@@ -100,20 +101,20 @@ FOREACH (example ${examples})
   ENDIF (BUILD_TESTING)
 ENDFOREACH (example ${examples})
 
-ADD_EXECUTABLE (f_ex_VG_add_sds_to_vgroup ${PROJECT_SOURCE_DIR}/VG_add_sds_to_vgroup.f)
-TARGET_NAMING (f_ex_VG_add_sds_to_vgroup ${LIB_TYPE})
-TARGET_FORTRAN_WIN_PROPERTIES (f_ex_VG_add_sds_to_vgroup "")
-SET_TARGET_PROPERTIES (f_ex_VG_add_sds_to_vgroup PROPERTIES LINKER_LANGUAGE Fortran)
-TARGET_LINK_LIBRARIES (f_ex_VG_add_sds_to_vgroup ${LINK_LIBS})
+ADD_EXECUTABLE (f_ex_h4ex_VG_add_sds_to_vgroup ${PROJECT_SOURCE_DIR}/h4ex_VG_add_sds_to_vgroup.f)
+TARGET_NAMING (f_ex_h4ex_VG_add_sds_to_vgroup ${LIB_TYPE})
+TARGET_FORTRAN_WIN_PROPERTIES (f_ex_h4ex_VG_add_sds_to_vgroup "")
+SET_TARGET_PROPERTIES (f_ex_h4ex_VG_add_sds_to_vgroup PROPERTIES LINKER_LANGUAGE Fortran)
+TARGET_LINK_LIBRARIES (f_ex_h4ex_VG_add_sds_to_vgroup ${LINK_LIBS})
 
 IF (BUILD_TESTING)
-  ADD_TEST (NAME f_extest_VG_add_sds_to_vgroup COMMAND $<TARGET_FILE:f_ex_VG_add_sds_to_vgroup>)
+  ADD_TEST (NAME f_extest_h4ex_VG_add_sds_to_vgroup COMMAND $<TARGET_FILE:f_ex_h4ex_VG_add_sds_to_vgroup>)
   IF (NOT "${last_test}" STREQUAL "")
-    SET_TESTS_PROPERTIES (f_extest_VG_add_sds_to_vgroup PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
+    SET_TESTS_PROPERTIES (f_extest_h4ex_VG_add_sds_to_vgroup PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
   ELSE (NOT "${last_test}" STREQUAL "")
-    SET_TESTS_PROPERTIES (f_extest_VG_add_sds_to_vgroup PROPERTIES LABELS EXAMPLES)
+    SET_TESTS_PROPERTIES (f_extest_h4ex_VG_add_sds_to_vgroup PROPERTIES LABELS EXAMPLES)
   ENDIF (NOT "${last_test}" STREQUAL "")
-  SET (last_test "f_extest_VG_add_sds_to_vgroup")
+  SET (last_test "f_extest_h4ex_VG_add_sds_to_vgroup")
 ENDIF (BUILD_TESTING)
 
 FOREACH (example ${skip_examples})

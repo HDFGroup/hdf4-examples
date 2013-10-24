@@ -5,22 +5,22 @@ PROJECT (HDF4Examples_MFHDF)
 # Define Sources
 #-----------------------------------------------------------------------------
 SET (examples
-    SD_create_sds
-    SD_write_to_sds
-    SD_write_slab
-    SD_alter_sds_values
-    SD_unlimited_sds
-    SD_compress_sds
-    SD_mv_sds_to_external
-    SD_read_from_sds
-    SD_read_subsets
-    SD_get_info
-    SD_find_sds_by_name
-    SD_set_get_dim_info
-    SD_dimscale_vs_sds
-    SD_set_attr
-    SD_get_attr
-    SD_chunking_example
+    h4ex_SD_create_sds
+    h4ex_SD_write_to_sds
+    h4ex_SD_write_slab
+    h4ex_SD_alter_sds_values
+    h4ex_SD_unlimited_sds
+    h4ex_SD_compress_sds
+    h4ex_SD_mv_sds_to_external
+    h4ex_SD_read_from_sds
+    h4ex_SD_read_subsets
+    h4ex_SD_get_info
+    h4ex_SD_find_sds_by_name
+    h4ex_SD_set_get_dim_info
+    h4ex_SD_dimscale_vs_sds
+    h4ex_SD_set_attr
+    h4ex_SD_get_attr
+    h4ex_SD_chunking_example
 )
 
 IF (BUILD_TESTING)
