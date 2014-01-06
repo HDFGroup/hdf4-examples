@@ -13,12 +13,18 @@ config/cmake/grepTest.cmake -text
 config/cmake/runTest.cmake -text
 config/cmake/xlatefile.c -text
 hdf/CMakeLists.txt -text
+hdf/examples/AN/CMakeLists.txt -text
+hdf/examples/AN/h4ex_AN_create_annotation.c -text
+hdf/examples/AN/h4ex_AN_get_annotation_info.c -text
+hdf/examples/AN/h4ex_AN_read_annotation.c -text
+hdf/examples/AN/testfiles/General_HDFobjects.hdf -text svneol=unset#application/x-hdf
+hdf/examples/AN/testfiles/h4ex_AN_create_annotation.ddl -text
+hdf/examples/AN/testfiles/h4ex_AN_create_annotation.tst -text
+hdf/examples/AN/testfiles/h4ex_AN_get_annotation_info.tst -text
+hdf/examples/AN/testfiles/h4ex_AN_read_annotation.tst -text
 hdf/examples/CMakeLists.txt -text
 hdf/examples/Makefile.am -text
 hdf/examples/Makefile.in -text
-hdf/examples/h4ex_AN_create_annotation.c -text
-hdf/examples/h4ex_AN_get_annotation_info.c -text
-hdf/examples/h4ex_AN_read_annotation.c -text
 hdf/examples/h4ex_GR_create_and_write_chunked_image.c -text
 hdf/examples/h4ex_GR_create_and_write_image.c -text
 hdf/examples/h4ex_GR_get_attribute.c -text

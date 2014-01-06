@@ -4,6 +4,7 @@ PROJECT (HDF4Examples_HDF C CXX)
 #-----------------------------------------------------------------------------
 # Define Sources
 #-----------------------------------------------------------------------------
+ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/AN   ${PROJECT_BINARY_DIR}/AN)
 SET (examples
     h4ex_VD_create_vdatas 
     h4ex_VD_write_mixed_vdata
@@ -29,10 +30,17 @@ SET (examples
     h4ex_GR_write_palette 
     h4ex_GR_image_info 
     h4ex_GR_read_image
-    h4ex_AN_create_annotation 
-    h4ex_AN_get_annotation_info 
-    h4ex_AN_read_annotation
 )
+
+FOREACH (example ${examples})
+  ADD_EXECUTABLE (hdf_${example} ${PROJECT_SOURCE_DIR}/${example}.c)
+  TARGET_NAMING (hdf_${example} ${LIB_TYPE})
+  TARGET_LINK_LIBRARIES (hdf_${example} ${LINK_LIBS})
+ENDFOREACH (example ${examples})
+
+ADD_EXECUTABLE (hdf_h4ex_VG_add_sds_to_vgroup ${PROJECT_SOURCE_DIR}/h4ex_VG_add_sds_to_vgroup.c)
+TARGET_NAMING (hdf_h4ex_VG_add_sds_to_vgroup ${LIB_TYPE})
+TARGET_LINK_LIBRARIES (hdf_h4ex_VG_add_sds_to_vgroup ${LINK_LIBS})
 
 IF (BUILD_TESTING)
   # Remove any output file left over from previous test run
@@ -40,7 +48,6 @@ IF (BUILD_TESTING)
       NAME HDF_EXAMPLES-clearall-objects
       COMMAND    ${CMAKE_COMMAND}
           -E remove 
-          General_HDFobjects.hdf
           General_Rimages.hdf
           General_Vdatas.hdf
           General_Vgroups.hdf
@@ -55,13 +62,8 @@ IF (BUILD_TESTING)
     SET_TESTS_PROPERTIES (HDF_EXAMPLES-clearall-objects PROPERTIES LABELS EXAMPLES)
   ENDIF (NOT "${last_test}" STREQUAL "")
   SET (last_test "HDF_EXAMPLES-clearall-objects")
-ENDIF (BUILD_TESTING)
 
-FOREACH (example ${examples})
-  ADD_EXECUTABLE (hdf_${example} ${PROJECT_SOURCE_DIR}/${example}.c)
-  TARGET_NAMING (hdf_${example} ${LIB_TYPE})
-  TARGET_LINK_LIBRARIES (hdf_${example} ${LINK_LIBS})
-  IF (BUILD_TESTING)
+  FOREACH (example ${examples})
     ADD_TEST (NAME hdftest_${example} COMMAND $<TARGET_FILE:hdf_${example}>)
     IF (NOT "${last_test}" STREQUAL "")
       SET_TESTS_PROPERTIES (hdftest_${example} PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
@@ -69,13 +71,8 @@ FOREACH (example ${examples})
       SET_TESTS_PROPERTIES (hdftest_${example} PROPERTIES LABELS EXAMPLES)
     ENDIF (NOT "${last_test}" STREQUAL "")
     SET (last_test "hdftest_${example}")
-  ENDIF (BUILD_TESTING)
-ENDFOREACH (example ${examples})
+  ENDFOREACH (example ${examples})
 
-ADD_EXECUTABLE (hdf_h4ex_VG_add_sds_to_vgroup ${PROJECT_SOURCE_DIR}/h4ex_VG_add_sds_to_vgroup.c)
-TARGET_NAMING (hdf_h4ex_VG_add_sds_to_vgroup ${LIB_TYPE})
-TARGET_LINK_LIBRARIES (hdf_h4ex_VG_add_sds_to_vgroup ${LINK_LIBS})
-IF (BUILD_TESTING)
   ADD_TEST (NAME hdftest_h4ex_VG_add_sds_to_vgroup COMMAND $<TARGET_FILE:hdf_h4ex_VG_add_sds_to_vgroup>)
   IF (NOT "${last_test}" STREQUAL "")
     SET_TESTS_PROPERTIES (hdftest_h4ex_VG_add_sds_to_vgroup PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
