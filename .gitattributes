@@ -1,12 +1,14 @@
 * text=auto !eol
 /CMakeLists.txt -text
 /CTestConfig.cmake -text
+/Using_CMake.txt -text
 config/cmake/CTestCustom.cmake -text
 config/cmake/FindHDF4.cmake -text
 config/cmake/FindMPI.cmake -text
 config/cmake/FindSZIP.cmake -text
 config/cmake/HDF4Macros.cmake -text
 config/cmake/HDF4UseFortran.cmake -text
+config/cmake/HDF4_Examples.cmake -text
 config/cmake/HDFMacros.cmake -text
 config/cmake/cacheinit.cmake -text
 config/cmake/grepTest.cmake -text
