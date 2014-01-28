@@ -13,7 +13,6 @@ config/cmake/HDFMacros.cmake -text
 config/cmake/cacheinit.cmake -text
 config/cmake/grepTest.cmake -text
 config/cmake/runTest.cmake -text
-config/cmake/xlatefile.c -text
 hdf/CMakeLists.txt -text
 hdf/examples/AN/CMakeLists.txt -text
 hdf/examples/AN/h4ex_AN_create_annotation.c -text
