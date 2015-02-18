@@ -53,17 +53,6 @@ set (CMAKE_Fortran_MODULE_DIRECTORY
 )
 
 #-----------------------------------------------------------------------------
-# Option to Build Static executables
-#-----------------------------------------------------------------------------
-option (BUILD_STATIC_EXECS "Build Static Executabless" OFF)
-if (BUILD_STATIC_EXECS)
-  if (NOT WIN32)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
-  endif (NOT WIN32)
-endif (BUILD_STATIC_EXECS)
-
-#-----------------------------------------------------------------------------
 # When building utility executables that generate other (source) files :
 # we make use of the following variables defined in the root CMakeLists.
 # Certain systems may add /Debug or /Release to output paths
