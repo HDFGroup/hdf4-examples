@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.10 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 ###############################################################################################################
 # This script will build and run the examples from an existing source folder
 # Execute from a command line:
