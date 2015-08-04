@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 ###############################################################################################################
 set(INSTALLDIR "/my_hdf_install/hdf4")  # appends line 29/37 to locate configuration files
 set(CTEST_CMAKE_GENERATOR "my_build_system")
-set(STATICLIBRARIES "TRUE/FALSE")  # true if HDF4 built with static libraries
+set(SHAREDLIBRARIES "TRUE/FALSE")  # true use HDF4 shared libraries
 ###############################################################################################################
 
 set(CTEST_SOURCE_NAME ${CTEST_SCRIPT_ARG})
@@ -23,7 +23,9 @@ set(CTEST_BUILD_CONFIGURATION "Release")
 #     Adjust the following SET Commands as needed
 ###############################################################################################################
 if(WIN32)
-  if(STATICLIBRARIES)
+  if(SHAREDLIBRARIES)
+    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=ON")
+  else(SHAREDLIBRARIES)
     set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=OFF")
   endif(STATICLIBRARIES)
   set(ENV{HDF4_DIR} "${INSTALLDIR}/cmake/hdf4")
@@ -31,7 +33,9 @@ if(WIN32)
   set(CTEST_SOURCE_DIRECTORY "${CTEST_DASHBOARD_ROOT}\\${CTEST_SOURCE_NAME}")
   set(CTEST_BINARY_DIRECTORY "${CTEST_DASHBOARD_ROOT}\\${CTEST_BINARY_NAME}")
 else(WIN32)
-  if(STATICLIBRARIES)
+  if(SHAREDLIBRARIES)
+    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=ON")
+  else(SHAREDLIBRARIES)
     set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_ANSI_CFLAGS:STRING=-fPIC")
   endif(STATICLIBRARIES)
   set(ENV{HDF4_DIR} "${INSTALLDIR}/share/cmake/hdf4")
@@ -45,7 +49,7 @@ endif(WIN32)
 # For any comments please contact cdashhelp@hdfgroup.org
 #
 ###############################################################################################################
- 
+
 #-----------------------------------------------------------------------------
 # MAC machines need special option
 #-----------------------------------------------------------------------------
@@ -56,17 +60,17 @@ if(APPLE)
   set(ENV{CC} "${XCODE_CC}")
   set(ENV{CXX} "${XCODE_CXX}")
   if(NOT MAC_FORTRAN_ON)
-    # Shared fortran is not supported, build static 
-    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_ANSI_CFLAGS:STRING=-fPIC")
+    # Shared fortran is not supported, build static
+    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_ANSI_CFLAGS:STRING=-fPIC")
   else(NOT MAC_FORTRAN_ON)
-    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=ON")
+    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=ON")
   endif(NOT MAC_FORTRAN_ON)
   set(BUILD_OPTIONS "${BUILD_OPTIONS} -DCTEST_USE_LAUNCHERS:BOOL=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=OFF")
 endif(APPLE)
- 
+
 #-----------------------------------------------------------------------------
 set(CTEST_CMAKE_COMMAND "\"${CMAKE_COMMAND}\"")
- 
+
 #-----------------------------------------------------------------------------
 ## Clear the build directory
 ## --------------------------
@@ -86,11 +90,11 @@ endif()
 set (CTEST_CONFIGURE_COMMAND
     "${CTEST_CMAKE_COMMAND} -C \"${CTEST_SOURCE_DIRECTORY}/config/cmake/cacheinit.cmake\" -DCMAKE_BUILD_TYPE:STRING=${CTEST_BUILD_CONFIGURATION} ${BUILD_OPTIONS} \"-G${CTEST_CMAKE_GENERATOR}\" \"${CTEST_SOURCE_DIRECTORY}\""
 )
- 
+
 #-----------------------------------------------------------------------------
 ## -- set output to english
 set($ENV{LC_MESSAGES}  "en_EN")
- 
+
 #-----------------------------------------------------------------------------
   ## NORMAL process
   ## --------------------------
@@ -103,5 +107,5 @@ set($ENV{LC_MESSAGES}  "en_EN")
     message (FATAL_ERROR "tests FAILED")
   endif(res GREATER 0)
 #-----------------------------------------------------------------------------
-############################################################################################################## 
+##############################################################################################################
 message("DONE")
