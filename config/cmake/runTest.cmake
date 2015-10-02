@@ -33,25 +33,25 @@ message (STATUS "COMMAND: ${TEST_PROGRAM} ${TEST_ARGS}")
 
 if (NOT TEST_INPUT)
   # run the test program, capture the stdout/stderr and the result var
-  EXECUTE_PROCESS (
+  execute_process (
       COMMAND ${TEST_PROGRAM} ${TEST_ARGS}
       WORKING_DIRECTORY ${TEST_FOLDER}
       RESULT_VARIABLE TEST_RESULT
       OUTPUT_FILE ${TEST_OUTPUT}
       ERROR_FILE ${TEST_OUTPUT}.err
-      OUTPUT_VARIABLE TEST_ERROR
+      OUTPUT_VARIABLE TEST_OUT
       ERROR_VARIABLE TEST_ERROR
   )
-ELSE (NOT TEST_INPUT)
+else (NOT TEST_INPUT)
   # run the test program with stdin, capture the stdout/stderr and the result var
-  EXECUTE_PROCESS (
+  execute_process (
       COMMAND ${TEST_PROGRAM} ${TEST_ARGS}
       WORKING_DIRECTORY ${TEST_FOLDER}
       RESULT_VARIABLE TEST_RESULT
       INPUT_FILE ${TEST_INPUT}
       OUTPUT_FILE ${TEST_OUTPUT}
       ERROR_FILE ${TEST_OUTPUT}.err
-      OUTPUT_VARIABLE TEST_ERROR
+      OUTPUT_VARIABLE TEST_OUT
       ERROR_VARIABLE TEST_ERROR
   )
 endif (NOT TEST_INPUT)
@@ -64,7 +64,7 @@ message (STATUS "COMMAND Result: ${TEST_RESULT}")
 #endif (ERROR_APPEND)
 
 if (TEST_APPEND)
-  file (APPEND ${TEST_FOLDER}/${TEST_OUTPUT} "${TEST_APPEND} ${TEST_RESULT}\n") 
+  file (APPEND ${TEST_FOLDER}/${TEST_OUTPUT} "${TEST_APPEND} ${TEST_RESULT}\n")
 endif (TEST_APPEND)
 
 # if the return value is !=${TEST_EXPECT} bail out
@@ -76,14 +76,13 @@ message (STATUS "COMMAND Error: ${TEST_ERROR}")
 
 if (TEST_MASK)
   file (READ ${TEST_FOLDER}/${TEST_OUTPUT} TEST_STREAM)
-  #STRING(REGEX REPLACE "Modified:[^\n]+\n" "Modified:  XXXX-XX-XX XX:XX:XX XXX\n" TEST_STREAM "${TEST_STREAM}") 
-  STRING(REGEX REPLACE "Storage:[^\n]+\n" "Storage:   <details removed for portability>\n" TEST_STREAM "${TEST_STREAM}") 
+   string (REGEX REPLACE "Storage:[^\n]+\n" "Storage:   <details removed for portability>\n" TEST_STREAM "${TEST_STREAM}")
   file (WRITE ${TEST_FOLDER}/${TEST_OUTPUT} "${TEST_STREAM}")
 endif (TEST_MASK)
 
 if (TEST_FILTER)
   file (READ ${TEST_FOLDER}/${TEST_OUTPUT} TEST_STREAM)
-  STRING(REGEX REPLACE "${TEST_FILTER}" "" TEST_STREAM "${TEST_STREAM}") 
+   string (REGEX REPLACE "${TEST_FILTER}" "" TEST_STREAM "${TEST_STREAM}")
   file (WRITE ${TEST_FOLDER}/${TEST_OUTPUT} "${TEST_STREAM}")
 endif (TEST_FILTER)
 
@@ -93,7 +92,7 @@ if (WIN32 AND NOT MINGW)
 endif (WIN32 AND NOT MINGW)
 
 # now compare the output with the reference
-EXECUTE_PROCESS (
+execute_process (
     COMMAND ${CMAKE_COMMAND} -E compare_files ${TEST_FOLDER}/${TEST_OUTPUT} ${TEST_FOLDER}/${TEST_REFERENCE}
     RESULT_VARIABLE TEST_RESULT
 )
