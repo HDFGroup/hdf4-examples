@@ -2,6 +2,7 @@
 JAVA/CMakeLists.txt -text
 JAVA/exAN/CMakeLists.txt -text
 JAVA/exAN/h4jex_AN_create_annotation.java -text
+JAVA/exAN/testfiles/h4jex_AN_create_annotation.txt -text
 config/cmake/UseJava.cmake -text
 config/cmake/UseJavaClassFilelist.cmake -text
 config/cmake/UseJavaSymlinks.cmake -text
