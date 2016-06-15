@@ -51,6 +51,7 @@ hdf/examples/VG/CMakeLists.txt -text
 hdf/examples/VG/testfiles/General_Vgroups.hdf -text svneol=unset#application/x-hdf
 hdf/examples/VG/testfiles/General_Vgroups2.hdf -text svneol=unset#application/x-hdf
 hdf/examples/VG/testfiles/General_Vgroups3.hdf -text svneol=unset#application/x-hdf
+hdf/examples/VG/testfiles/General_Vgroups4.hdf -text svneol=unset#application/x-hdf
 hdf/examples/VG/testfiles/h4ex_VG_add_sds_to_vgroup.ddl -text
 hdf/examples/VG/testfiles/h4ex_VG_add_sds_to_vgroup.tst -text
 hdf/examples/VG/testfiles/h4ex_VG_create_vgroup.ddl -text

@@ -18,6 +18,7 @@ SET (h4examples_files
     General_Vgroups.hdf
     General_Vgroups2.hdf
     General_Vgroups3.hdf
+    General_Vgroups4.hdf
 )
 
 FOREACH (example ${h4examples})
