@@ -1,5 +1,63 @@
 * text=auto !eol
+JAVA/CMakeLists.txt -text
+JAVA/exAN/CMakeLists.txt -text
+JAVA/exAN/h4jex_AN_create_annotation.java -text
+config/cmake/UseJava.cmake -text
+config/cmake/UseJavaClassFilelist.cmake -text
+config/cmake/UseJavaSymlinks.cmake -text
+config/cmake/jrunTest.cmake -text
 hdf/examples/AN/testfiles/General_HDFobjects.hdf -text svneol=unset#application/x-hdf
+hdf/examples/GR/CMakeLists.txt -text
+hdf/examples/GR/testfiles/General_RImages.hdf -text svneol=unset#application/x-hdf
+hdf/examples/GR/testfiles/General_RImages2.hdf -text svneol=unset#application/x-hdf
+hdf/examples/GR/testfiles/General_RImages3.hdf -text svneol=unset#application/x-hdf
+hdf/examples/GR/testfiles/General_RImages4.hdf -text svneol=unset#application/x-hdf
+hdf/examples/GR/testfiles/Image_with_Palette.hdf -text svneol=unset#application/x-hdf
+hdf/examples/GR/testfiles/h4ex_GR_create_and_write_chunked_image.ddl -text
+hdf/examples/GR/testfiles/h4ex_GR_create_and_write_chunked_image.tst -text
+hdf/examples/GR/testfiles/h4ex_GR_create_and_write_image.ddl -text
+hdf/examples/GR/testfiles/h4ex_GR_create_and_write_image.tst -text
+hdf/examples/GR/testfiles/h4ex_GR_get_attribute.tst -text
+hdf/examples/GR/testfiles/h4ex_GR_image_info.tst -text
+hdf/examples/GR/testfiles/h4ex_GR_modify_image.tst -text
+hdf/examples/GR/testfiles/h4ex_GR_read_image.tst -text
+hdf/examples/GR/testfiles/h4ex_GR_read_palette.tst -text
+hdf/examples/GR/testfiles/h4ex_GR_set_attribute.tst -text
+hdf/examples/GR/testfiles/h4ex_GR_write_palette.ddl -text
+hdf/examples/GR/testfiles/h4ex_GR_write_palette.tst -text
+hdf/examples/VD/CMakeLists.txt -text
+hdf/examples/VD/testfiles/General_Vdatas.hdf -text svneol=unset#application/x-hdf
+hdf/examples/VD/testfiles/General_Vdatas2.hdf -text svneol=unset#application/x-hdf
+hdf/examples/VD/testfiles/General_Vdatas3.hdf -text svneol=unset#application/x-hdf
+hdf/examples/VD/testfiles/Packed_Vdata.hdf -text svneol=unset#application/x-hdf
+hdf/examples/VD/testfiles/Two_Vdatas.hdf -text svneol=unset#application/x-hdf
+hdf/examples/VD/testfiles/h4ex_GR_image_info.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_create_onefield_vdatas.ddl -text
+hdf/examples/VD/testfiles/h4ex_VD_create_onefield_vdatas.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_create_vdatas.ddl -text
+hdf/examples/VD/testfiles/h4ex_VD_create_vdatas.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_get_vdata_info.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_locate_vdata.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_read_from_vdata.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_read_mixed_vdata.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_set_get_vdata_attr.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_write_mixed_vdata.ddl -text
+hdf/examples/VD/testfiles/h4ex_VD_write_mixed_vdata.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_write_mixed_vdata_struct.ddl -text
+hdf/examples/VD/testfiles/h4ex_VD_write_mixed_vdata_struct.tst -text
+hdf/examples/VD/testfiles/h4ex_VD_write_to_vdata.tst -text
+hdf/examples/VG/CMakeLists.txt -text
+hdf/examples/VG/testfiles/General_Vgroups.hdf -text svneol=unset#application/x-hdf
+hdf/examples/VG/testfiles/General_Vgroups2.hdf -text svneol=unset#application/x-hdf
+hdf/examples/VG/testfiles/General_Vgroups3.hdf -text svneol=unset#application/x-hdf
+hdf/examples/VG/testfiles/h4ex_VG_add_sds_to_vgroup.ddl -text
+hdf/examples/VG/testfiles/h4ex_VG_add_sds_to_vgroup.tst -text
+hdf/examples/VG/testfiles/h4ex_VG_create_vgroup.ddl -text
+hdf/examples/VG/testfiles/h4ex_VG_create_vgroup.tst -text
+hdf/examples/VG/testfiles/h4ex_VG_get_vgroup_info.tst -text
+hdf/examples/VG/testfiles/h4ex_VG_insert_vdatas_to_vgroup.tst -text
+hdf/examples/VG/testfiles/h4ex_VG_set_get_vgroup_attr.tst -text
+hdf/examples/VG/testfiles/h4ex_VG_vgroup_contents.tst -text
 hdf/fortran/h4ex_AN_create_annotation.f -text
 hdf/fortran/h4ex_AN_get_annotation_info.f -text
 hdf/fortran/h4ex_AN_read_annotation.f -text

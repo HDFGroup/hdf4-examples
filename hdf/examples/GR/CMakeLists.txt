@@ -1,18 +1,28 @@
 cmake_minimum_required (VERSION 3.1.0)
-PROJECT (HDF4Examples_HDF_AN C CXX)
+PROJECT (HDF4Examples_HDF_GR C CXX)
 
 #-----------------------------------------------------------------------------
 # Define Sources
 #-----------------------------------------------------------------------------
 SET (h4examples
-    h4ex_AN_create_annotation
+    h4ex_GR_create_and_write_chunked_image
+    h4ex_GR_create_and_write_image
+    h4ex_GR_write_palette
 )
 SET (h4examples_use
-    h4ex_AN_get_annotation_info
-    h4ex_AN_read_annotation
+    h4ex_GR_get_attribute
+    h4ex_GR_image_info
+    h4ex_GR_modify_image
+    h4ex_GR_read_image
+    h4ex_GR_read_palette
+    h4ex_GR_set_attribute
 )
 SET (h4examples_files
-    General_HDFobjects.hdf
+    General_RImages.hdf
+    General_RImages2.hdf
+    General_RImages3.hdf
+    General_RImages4.hdf
+    Image_with_Palette.hdf
 )
 
 FOREACH (example ${h4examples})
@@ -76,7 +86,7 @@ IF (BUILD_TESTING)
         ARGS       -E copy_if_different "${testsrc}.tst" "${testdest}.tst"
         DEPENDS    "${testsrc}.tst"
     )
-    list(APPEND HDF4Examples_HDF_AN_TEST_FILES "${testdest}.tst")
+    list(APPEND HDF4Examples_HDF_GR_TEST_FILES "${testdest}.tst")
     IF (HDF4_BUILD_TOOLS)
       ADD_CUSTOM_COMMAND (
           OUTPUT     "${testdest}.ddl"
@@ -84,7 +94,7 @@ IF (BUILD_TESTING)
           ARGS       -E copy_if_different "${testsrc}.ddl" "${testdest}.ddl"
           DEPENDS    "${testsrc}.ddl"
       )
-      list(APPEND HDF4Examples_HDF_AN_TEST_FILES "${testdest}.ddl")
+      list(APPEND HDF4Examples_HDF_GR_TEST_FILES "${testdest}.ddl")
     ENDIF (HDF4_BUILD_TOOLS)
   ENDFOREACH (example ${h4examples})
 
@@ -97,7 +107,7 @@ IF (BUILD_TESTING)
         ARGS       -E copy_if_different "${testsrc}.tst" "${testdest}.tst"
         DEPENDS    "${testsrc}.tst"
     )
-    list(APPEND HDF4Examples_HDF_AN_TEST_FILES "${testdest}.tst")
+    list(APPEND HDF4Examples_HDF_GR_TEST_FILES "${testdest}.tst")
   ENDFOREACH (example ${h4examples_use})
 
   FOREACH (ex_file ${h4examples_files})
@@ -109,11 +119,11 @@ IF (BUILD_TESTING)
         ARGS       -E copy_if_different "${testsrc}" "${testdest}"
         DEPENDS    "${testsrc}"
     )
-    list(APPEND HDF4Examples_HDF_AN_TEST_FILES "${testdest}")
+    list(APPEND HDF4Examples_HDF_GR_TEST_FILES "${testdest}")
   ENDFOREACH (ex_file ${h4examples_files})
 
-  add_custom_target(HDF4Examples_HDF_AN-files ALL COMMENT "Copying files needed by AN tests"
-                    DEPENDS ${HDF4Examples_HDF_AN_TEST_FILES})
+  add_custom_target(HDF4Examples_HDF_GR-files ALL COMMENT "Copying files needed by GR tests"
+                    DEPENDS ${HDF4Examples_HDF_GR_TEST_FILES})
 
   FOREACH (example ${h4examples})
     ADD_H4_TEST (${example} 1 dumpvg)

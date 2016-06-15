@@ -1,18 +1,29 @@
 cmake_minimum_required (VERSION 3.1.0)
-PROJECT (HDF4Examples_HDF_AN C CXX)
+PROJECT (HDF4Examples_HDF_VD C CXX)
 
 #-----------------------------------------------------------------------------
 # Define Sources
 #-----------------------------------------------------------------------------
 SET (h4examples
-    h4ex_AN_create_annotation
+    h4ex_VD_create_onefield_vdatas
+    h4ex_VD_create_vdatas
+    h4ex_VD_write_mixed_vdata_struct
+    h4ex_VD_write_mixed_vdata
 )
 SET (h4examples_use
-    h4ex_AN_get_annotation_info
-    h4ex_AN_read_annotation
+    h4ex_VD_get_vdata_info
+    h4ex_VD_locate_vdata
+    h4ex_VD_read_from_vdata
+    h4ex_VD_read_mixed_vdata
+#    h4ex_VD_set_get_vdata_attr
+    h4ex_VD_write_to_vdata
 )
 SET (h4examples_files
-    General_HDFobjects.hdf
+    General_Vdatas.hdf
+    General_Vdatas2.hdf
+    General_Vdatas3.hdf
+    Packed_Vdata.hdf
+    Two_Vdatas.hdf
 )
 
 FOREACH (example ${h4examples})
@@ -76,7 +87,7 @@ IF (BUILD_TESTING)
         ARGS       -E copy_if_different "${testsrc}.tst" "${testdest}.tst"
         DEPENDS    "${testsrc}.tst"
     )
-    list(APPEND HDF4Examples_HDF_AN_TEST_FILES "${testdest}.tst")
+    list(APPEND HDF4Examples_HDF_VD_TEST_FILES "${testdest}.tst")
     IF (HDF4_BUILD_TOOLS)
       ADD_CUSTOM_COMMAND (
           OUTPUT     "${testdest}.ddl"
@@ -84,7 +95,7 @@ IF (BUILD_TESTING)
           ARGS       -E copy_if_different "${testsrc}.ddl" "${testdest}.ddl"
           DEPENDS    "${testsrc}.ddl"
       )
-      list(APPEND HDF4Examples_HDF_AN_TEST_FILES "${testdest}.ddl")
+      list(APPEND HDF4Examples_HDF_VD_TEST_FILES "${testdest}.ddl")
     ENDIF (HDF4_BUILD_TOOLS)
   ENDFOREACH (example ${h4examples})
 
@@ -97,7 +108,7 @@ IF (BUILD_TESTING)
         ARGS       -E copy_if_different "${testsrc}.tst" "${testdest}.tst"
         DEPENDS    "${testsrc}.tst"
     )
-    list(APPEND HDF4Examples_HDF_AN_TEST_FILES "${testdest}.tst")
+    list(APPEND HDF4Examples_HDF_VD_TEST_FILES "${testdest}.tst")
   ENDFOREACH (example ${h4examples_use})
 
   FOREACH (ex_file ${h4examples_files})
@@ -109,11 +120,11 @@ IF (BUILD_TESTING)
         ARGS       -E copy_if_different "${testsrc}" "${testdest}"
         DEPENDS    "${testsrc}"
     )
-    list(APPEND HDF4Examples_HDF_AN_TEST_FILES "${testdest}")
+    list(APPEND HDF4Examples_HDF_VD_TEST_FILES "${testdest}")
   ENDFOREACH (ex_file ${h4examples_files})
 
-  add_custom_target(HDF4Examples_HDF_AN-files ALL COMMENT "Copying files needed by AN tests"
-                    DEPENDS ${HDF4Examples_HDF_AN_TEST_FILES})
+  add_custom_target(HDF4Examples_HDF_VD-files ALL COMMENT "Copying files needed by VD tests"
+                    DEPENDS ${HDF4Examples_HDF_VD_TEST_FILES})
 
   FOREACH (example ${h4examples})
     ADD_H4_TEST (${example} 1 dumpvg)
