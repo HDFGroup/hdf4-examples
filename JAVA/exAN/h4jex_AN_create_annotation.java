@@ -27,7 +27,6 @@ private static String  DATA_DESC_TXT = "This is a vgroup that is used to test da
     public static void main(String args[]) throws Exception {
         //************************* Variable declaration **************************
 
-        int status; // returned status for functions
         long file_id; // HDF file identifier
         long an_id; // AN interface identifier
         long file_label_id; // file label identifier
@@ -37,7 +36,6 @@ private static String  DATA_DESC_TXT = "This is a vgroup that is used to test da
         long vgroup_id;
         int vgroup_tag;
         int vgroup_ref;
-        int ret_val = -1;
 
         //********************** End of variable declaration **********************
 

@@ -6,6 +6,9 @@ JAVA/exAN/testfiles/h4jex_AN_create_annotation.txt -text
 JAVA/exGR/CMakeLists.txt -text
 JAVA/exGR/h4jex_GR_create_and_write_image.java -text
 JAVA/exGR/testfiles/h4jex_GR_create_and_write_image.txt -text
+JAVA/exSD/CMakeLists.txt -text
+JAVA/exSD/h4jex_SD_unlimited_sds.java -text
+JAVA/exSD/testfiles/h4jex_SD_unlimited_sds.txt -text
 JAVA/exVD/CMakeLists.txt -text
 JAVA/exVD/h4jex_VD_create_onefield_vdatas.java -text
 JAVA/exVD/testfiles/h4jex_VD_create_onefield_vdatas.txt -text
