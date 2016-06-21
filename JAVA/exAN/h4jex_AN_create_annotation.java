@@ -163,5 +163,6 @@ private static String  DATA_DESC_TXT = "This is a vgroup that is used to test da
             System.err.println("Cannot start annotation handling on the file " + FILE_NAME);
         }
         HDFLibrary.Hclose(file_id);
+        System.out.println("AN_create_annotation done");
     }
 }

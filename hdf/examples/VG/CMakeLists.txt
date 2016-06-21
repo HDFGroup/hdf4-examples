@@ -11,7 +11,7 @@ SET (h4examples
 SET (h4examples_use
     h4ex_VG_get_vgroup_info
     h4ex_VG_insert_vdatas_to_vgroup
-    h4ex_VG_set_get_vgroup_attr
+    #h4ex_VG_set_get_vgroup_attr
     h4ex_VG_vgroup_contents
 )
 SET (h4examples_files
