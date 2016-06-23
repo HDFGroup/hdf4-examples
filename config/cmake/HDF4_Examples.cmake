@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 ###############################################################################################################
-# This script will build and run the examples from an existing source folder
+# This script will build and run the examples from a folder
 # Execute from a command line:
 #     ctest -S HDF4_Examples.cmake,HDF4Examples -C Release -O test.log
 ###############################################################################################################
@@ -10,40 +10,48 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 ###############################################################################################################
 set(INSTALLDIR "/my_hdf_install/hdf4")  # appends line 29/37 to locate configuration files
 set(CTEST_CMAKE_GENERATOR "my_build_system")
-set(SHAREDLIBRARIES "TRUE/FALSE")  # true use HDF4 shared libraries
+set(STATICLIBRARIES "TRUE")  # false use HDF4 shared libraries
+set(CTEST_BUILD_CONFIGURATION "Release")
+set(FORTRANLIBRARIES "FALSE")  # true use HDF4 fortran libraries
+set(JAVALIBRARIES "FALSE")  # true use HDF4 java libraries
+#set(NO_MAC_FORTRAN "true")
 ###############################################################################################################
 
 set(CTEST_SOURCE_NAME ${CTEST_SCRIPT_ARG})
 set(CTEST_DASHBOARD_ROOT ${CTEST_SCRIPT_DIRECTORY})
-set(CTEST_BUILD_CONFIGURATION "Release")
-#set(NO_MAC_FORTRAN "true")
-#set(BUILD_OPTIONS ""${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=ON")
 
 ###############################################################################################################
 #     Adjust the following SET Commands as needed
 ###############################################################################################################
 if(WIN32)
-  if(SHAREDLIBRARIES)
-    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=ON")
-  else(SHAREDLIBRARIES)
+  if(${STATICLIBRARIES})
     set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=OFF")
-  endif(STATICLIBRARIES)
-  set(ENV{HDF4_DIR} "${INSTALLDIR}/cmake/hdf4")
+  endif()
+  set(ENV{HDF4_DIR} "${INSTALLDIR}/cmake")
   set(CTEST_BINARY_NAME ${CTEST_SOURCE_NAME}\\build)
   set(CTEST_SOURCE_DIRECTORY "${CTEST_DASHBOARD_ROOT}\\${CTEST_SOURCE_NAME}")
   set(CTEST_BINARY_DIRECTORY "${CTEST_DASHBOARD_ROOT}\\${CTEST_BINARY_NAME}")
 else(WIN32)
-  if(SHAREDLIBRARIES)
-    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=ON")
-  else(SHAREDLIBRARIES)
+  if(${STATICLIBRARIES})
     set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_ANSI_CFLAGS:STRING=-fPIC")
-  endif(STATICLIBRARIES)
-  set(ENV{HDF4_DIR} "${INSTALLDIR}/share/cmake/hdf4")
+  endif()
+  set(ENV{HDF4_DIR} "${INSTALLDIR}/share/cmake")
   set(ENV{LD_LIBRARY_PATH} "${INSTALLDIR}/lib")
   set(CTEST_BINARY_NAME ${CTEST_SOURCE_NAME}/build)
   set(CTEST_SOURCE_DIRECTORY "${CTEST_DASHBOARD_ROOT}/${CTEST_SOURCE_NAME}")
   set(CTEST_BINARY_DIRECTORY "${CTEST_DASHBOARD_ROOT}/${CTEST_BINARY_NAME}")
 endif(WIN32)
+if(${FORTRANLIBRARIES})
+  set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=ON")
+else()
+  set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=OFF")
+endif()
+if(${JAVALIBRARIES})
+  set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_JAVA:BOOL=ON")
+else()
+  set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_JAVA:BOOL=OFF")
+endif()
+set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF4_PACKAGE_NAME:STRING=@HDF4_PACKAGE@@HDF_PACKAGE_EXT@")
 
 ###############################################################################################################
 # For any comments please contact cdashhelp@hdfgroup.org
@@ -59,24 +67,45 @@ if(APPLE)
   execute_process(COMMAND xcrun --find c++ OUTPUT_VARIABLE XCODE_CXX OUTPUT_STRIP_TRAILING_WHITESPACE)
   set(ENV{CC} "${XCODE_CC}")
   set(ENV{CXX} "${XCODE_CXX}")
-  if(NOT MAC_FORTRAN_ON)
+  if(NOT NO_MAC_FORTRAN)
     # Shared fortran is not supported, build static
-    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_ANSI_CFLAGS:STRING=-fPIC")
-  else(NOT MAC_FORTRAN_ON)
-    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=ON")
-  endif(NOT MAC_FORTRAN_ON)
+    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_ANSI_CFLAGS:STRING=-fPIC")
+  else()
+    set(BUILD_OPTIONS "${BUILD_OPTIONS} -DHDF_BUILD_FORTRAN:BOOL=OFF")
+  endif()
   set(BUILD_OPTIONS "${BUILD_OPTIONS} -DCTEST_USE_LAUNCHERS:BOOL=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=OFF")
-endif(APPLE)
+endif()
 
 #-----------------------------------------------------------------------------
 set(CTEST_CMAKE_COMMAND "\"${CMAKE_COMMAND}\"")
+## --------------------------
+if(CTEST_USE_TAR_SOURCE)
+  ## Uncompress source if tar or zip file provided
+  ## --------------------------
+  if(WIN32)
+    message(STATUS "extracting... [${CMAKE_EXECUTABLE_NAME} -E tar -xvf ${CTEST_USE_TAR_SOURCE}.zip]")
+    execute_process(COMMAND ${CMAKE_EXECUTABLE_NAME} -E tar -xvf ${CTEST_DASHBOARD_ROOT}\\${CTEST_USE_TAR_SOURCE}.zip RESULT_VARIABLE rv)
+  else()
+    message(STATUS "extracting... [${CMAKE_EXECUTABLE_NAME} -E tar -xvf ${CTEST_USE_TAR_SOURCE}.tar]")
+    execute_process(COMMAND ${CMAKE_EXECUTABLE_NAME} -E tar -xvf ${CTEST_DASHBOARD_ROOT}/${CTEST_USE_TAR_SOURCE}.tar RESULT_VARIABLE rv)
+  endif()
+
+  if(NOT rv EQUAL 0)
+    message(STATUS "extracting... [error-(${rv}) clean up]")
+    file(REMOVE_RECURSE "${CTEST_SOURCE_DIRECTORY}")
+    message(FATAL_ERROR "error: extract of ${CTEST_SOURCE_NAME} failed")
+  endif()
+endif(CTEST_USE_TAR_SOURCE)
 
 #-----------------------------------------------------------------------------
 ## Clear the build directory
 ## --------------------------
 set(CTEST_START_WITH_EMPTY_BINARY_DIRECTORY TRUE)
-file(MAKE_DIRECTORY "${CTEST_BINARY_DIRECTORY}")
-ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
+if (EXISTS "${CTEST_BINARY_DIRECTORY}" AND IS_DIRECTORY "${CTEST_BINARY_DIRECTORY}")
+  ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
+else ()
+  file(MAKE_DIRECTORY "${CTEST_BINARY_DIRECTORY}")
+endif ()
 
 # Use multiple CPU cores to build
 include(ProcessorCount)
@@ -84,7 +113,7 @@ ProcessorCount(N)
 if(NOT N EQUAL 0)
   if(NOT WIN32)
     set(CTEST_BUILD_FLAGS -j${N})
-  endif(NOT WIN32)
+  endif()
   set(ctest_test_args ${ctest_test_args} PARALLEL_LEVEL ${N})
 endif()
 set (CTEST_CONFIGURE_COMMAND
@@ -108,4 +137,4 @@ set($ENV{LC_MESSAGES}  "en_EN")
   endif(res GREATER 0)
 #-----------------------------------------------------------------------------
 ##############################################################################################################
-message("DONE")
+message(STATUS "DONE")

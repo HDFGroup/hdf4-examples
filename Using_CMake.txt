@@ -19,7 +19,7 @@ I. Preconditions
 
    1. We suggest you obtain the latest CMake for windows from the Kitware
       web site. The HDF 4.2.x product requires a minimum CMake version
-      of 2.8.10.
+      of 3.1.0.
 
    2. You have installed the HDF4 library built with CMake, by executing
       the HDF Install Utility (the *.exe file in the binary package for
@@ -29,7 +29,7 @@ I. Preconditions
 
    3. Set the environment variable HDF4_DIR to the installed location of
       the config files for HDF4. On Windows:
-            HDF4_DIR=C:/Program Files/HDF_Group/HDF/4.2.x/cmake/hdf4
+            HDF4_DIR=C:/Program Files/HDF_Group/HDF/4.2.x/cmake
 
       (Note there are no quote characters used on Windows and all platforms
       use forward slashes)
@@ -59,13 +59,21 @@ Default installation process:
             * MinGW Makefiles
             * NMake Makefiles
             * Unix Makefiles
-            * Visual Studio 11
-            * Visual Studio 11 Win64
-            * Visual Studio 10
-            * Visual Studio 10 Win64
+            * Visual Studio 11 2012
+            * Visual Studio 11 2012 Win64
+            * Visual Studio 12 2013
+            * Visual Studio 12 2013 Win64
+            * Visual Studio 14 2015
+            * Visual Studio 14 2015 Win64
 
-       Edit line 13 of the HDF4_Examples.cmake file and change the SHAREDLIBRARIES
-           to TRUE if the HDF4 installation has shared libraries, otherwise FALSE to use static.
+       Edit line 13 of the HDF4_Examples.cmake file and change the STATICLIBRARIES
+           to TRUE if to use static libraries, otherwise FALSE to use shared.
+
+       Edit line 15 of the HDF4_Examples.cmake file and change the FORTRANLIBRARIES
+           to TRUE if to use fortran libraries.
+
+       Edit line 16 of the HDF4_Examples.cmake file and change the JAVALIBRARIES
+           to TRUE if to use java libraries.
 
        Execute from this directory:
           ctest -S HDF4_Examples.cmake,hdf4_examples -C Release -O test.log
@@ -83,10 +91,7 @@ The amount of script information can be increased by adding -V to the ctest
 III. Common changes to the HDF4_Examples.cmake file
 ========================================================================
 
-Line 19: uncomment to allow Mac machines to build shared examples.
-
-Line 20: uncomment to build and test Fortran examples.
-
+Line 17: uncomment to allow Mac machines to build shared examples.
 
 
 ========================================================================
