@@ -125,16 +125,22 @@ set (CTEST_CONFIGURE_COMMAND
 set($ENV{LC_MESSAGES}  "en_EN")
 
 #-----------------------------------------------------------------------------
-  ## NORMAL process
-  ## --------------------------
-  CTEST_START (Experimental)
-  CTEST_CONFIGURE (BUILD "${CTEST_BINARY_DIRECTORY}")
-  CTEST_READ_CUSTOM_FILES ("${CTEST_BINARY_DIRECTORY}")
-  CTEST_BUILD (BUILD "${CTEST_BINARY_DIRECTORY}" APPEND)
-  CTEST_TEST (BUILD "${CTEST_BINARY_DIRECTORY}" APPEND ${ctest_test_args} RETURN_VALUE res)
-  if(res GREATER 0)
-    message (FATAL_ERROR "tests FAILED")
-  endif(res GREATER 0)
+## NORMAL process
+## --------------------------
+ctest_start (Experimental)
+ctest_configure (BUILD "${CTEST_BINARY_DIRECTORY}" RETURN_VALUE res)
+if(${res} LESS 0 OR ${res} GREATER 0)
+  message(STATUS "Failed Configure: ${res}\n")
+endif()
+CTEST_READ_CUSTOM_FILES ("${CTEST_BINARY_DIRECTORY}")
+ctest_build (BUILD "${CTEST_BINARY_DIRECTORY}" APPEND RETURN_VALUE res NUMBER_ERRORS errval)
+if(${res} LESS 0 OR ${res} GREATER 0 OR ${errval} GREATER 0)
+  message(STATUS "Failed ${errval} Build: ${res}\n")
+endif()
+ctest_test (BUILD "${CTEST_BINARY_DIRECTORY}" APPEND ${ctest_test_args} RETURN_VALUE res)
+if(${res} LESS 0 OR ${res} GREATER 0)
+  message (FATAL_ERROR "tests FAILED")
+endif()
 #-----------------------------------------------------------------------------
 ##############################################################################################################
 message(STATUS "DONE")
