@@ -316,8 +316,8 @@ option (PACK_EXAMPLE_SOURCE "Package HDF4 Example Source File" OFF)
 if (PACK_EXAMPLE_SOURCE)
   set(CPACK_SOURCE_IGNORE_FILES
       "${PROJECT_BINARY_DIR}"
-      "\\.git*"
-      "\\.project"
+      "^${PROJECT_SOURCE_DIR}/\\\\.git*"
+      "^${PROJECT_SOURCE_DIR}/\\\\.project"
   )
   set (CPACK_PACKAGE_VENDOR "HDF_Group")
   set (CPACK_PACKAGE_NAME "${HDF4_PACKAGE_NAME}")
