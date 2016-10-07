@@ -324,6 +324,19 @@ if (PACK_EXAMPLE_SOURCE)
   set (CPACK_GENERATOR "TGZ")
   set (CPACK_SOURCE_GENERATOR "TGZ")
   set (CPACK_SOURCE_PACKAGE_FILE_NAME "HDF4Examples-${CPACK_PACKAGE_VERSION}")
-  set (CPACK_SOURCE_TOPLEVEL_TAG "${HDF4_PACKAGE_NAME}")
   INCLUDE(CPack)
+  # Installation types
+  cpack_add_install_type(Full DISPLAY_NAME "Everything")
+
+  # Component groups
+  cpack_add_component_group(Development
+      EXPANDED
+      DESCRIPTION "All of the examples to test HDF library"
+  )
+  cpack_add_component(source
+      DISPLAY_NAME "Source Files"
+      DESCRIPTION "Source files of HDF Library Examples"
+      GROUP Development
+      INSTALL_TYPES Full
+  )
 endif (PACK_EXAMPLE_SOURCE)
