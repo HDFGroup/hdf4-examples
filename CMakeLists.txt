@@ -308,3 +308,12 @@ if (EXISTS "${PROJECT_SOURCE_DIR}/JAVA" AND IS_DIRECTORY "${PROJECT_SOURCE_DIR}/
     add_subdirectory (${PROJECT_SOURCE_DIR}/JAVA ${PROJECT_BINARY_DIR}/JAVA)
   endif (HDF_BUILD_JAVA AND HDF4_BUILD_JAVA)
 endif (EXISTS "${PROJECT_SOURCE_DIR}/JAVA" AND IS_DIRECTORY "${PROJECT_SOURCE_DIR}/JAVA")
+
+#-----------------------------------------------------------------------------
+# Source Packaging Option
+#-----------------------------------------------------------------------------
+option (PACK_EXAMPLE_SOURCE "Package HDF4 Example Source File" OFF)
+if (PACK_EXAMPLE_SOURCE)
+  set(CPACK_SOURCE_IGNORE_FILES "${PROJECT_BINARY_DIR}" "/\\.git/" )
+  INCLUDE(CPack)
+endif (PACK_EXAMPLE_SOURCE)
