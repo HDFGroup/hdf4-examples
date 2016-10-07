@@ -13,3 +13,5 @@ set (BUILD_TESTING ON CACHE BOOL "Build HDF Unit Testing" FORCE)
 set (HDF4_PACKAGE_NAME "hdf4" CACHE STRING "Name of HDF4 package" FORCE)
 
 set (PACK_EXAMPLE_SOURCE ON CACHE BOOL "Package the source" FORCE)
+
+set (CPACK_PACKAGE_VERSION "0.3.1")
