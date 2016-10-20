@@ -239,7 +239,7 @@ if (HDF_DISABLE_COMPILER_WARNINGS)
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
   endif ()
-endif (HDF_DISABLE_COMPILER_WARNINGS)
+endif ()
 
 #-----------------------------------------------------------------------------
 # This is in here to help some of the GCC based IDES like Eclipse
@@ -328,6 +328,10 @@ if (PACK_EXAMPLE_SOURCE)
   set (CPACK_PACKAGE_NAME "HDF4Examples")
   set (CPACK_GENERATOR "TGZ")
   set (CPACK_SOURCE_GENERATOR "TGZ")
+  if (WIN32)
+    set (CPACK_GENERATOR "ZIP")
+    set (CPACK_SOURCE_GENERATOR "ZIP")
+  endif()
   set (CPACK_SOURCE_PACKAGE_FILE_NAME "HDF4Examples-${CPACK_PACKAGE_VERSION}-Source")
   INCLUDE(CPack)
   # Installation types
