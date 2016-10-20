@@ -12,7 +12,7 @@ int main()
    intn  status;
    int32 start[2], edges[2];
    int32 data[Y_LENGTH][X_LENGTH];
-   int   i, j;
+   int   j;
 
    /********************* End of variable declaration ***********************/
 
@@ -23,12 +23,12 @@ int main()
 
    /*
    * Select the first data set.
-   */ 
+   */
    sds_index = 0;
    sds_id = SDselect (sd_id, sds_index);
 
-   /* 
-   * Set elements of array start to 0, elements of array edges 
+   /*
+   * Set elements of array start to 0, elements of array edges
    * to SDS dimensions,and use NULL for the argument stride in SDreaddata
    * to read the entire data.
    */
@@ -42,7 +42,7 @@ int main()
    */
    status = SDreaddata (sds_id, start, NULL, edges, (VOIDP)data);
 
-   /* 
+   /*
    * Print 10th row; the following numbers should be displayed.
    *
    *         10 1000 12 13 14

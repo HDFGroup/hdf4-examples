@@ -19,13 +19,10 @@ int main( )
    /************************* Variable declaration **************************/
 
    intn  status;        /* status for functions returning an intn */
-   int32 index;
    int32 file_id, gr_id, ri_id,
          start[2],      /* start position to write for each dimension */
-         edges[2],      /* number of elements to bewritten along 
-                           each dimension */
-         stride[2],     /* number of elements to skip on each dimension */
-         dim_sizes[2];  /* dimension sizes of the image array */
+         edges[2],      /* number of elements to bewritten along each dimension */
+         stride[2];     /* dimension sizes of the image array */
    int16 entire_image[Y_LENGTH][X_LENGTH][N_COMPS],
          partial_image[PART_ROWS][PART_COLS][N_COMPS],
          skipped_image[SKIP_ROWS][SKIP_COLS][N_COMPS];
@@ -49,7 +46,7 @@ int main( )
    ri_id = GRselect (gr_id, 0);
 
    /*
-   * Define the size of the data to be read, i.e., start from the origin 
+   * Define the size of the data to be read, i.e., start from the origin
    * and go as long as the length of each dimension.
    */
    start[0] = start[1] = 0;
@@ -62,7 +59,7 @@ int main( )
    status = GRreadimage (ri_id, start, NULL, edges, (VOIDP)entire_image);
 
    /*
-   * Display only the first component of the image since the two components 
+   * Display only the first component of the image since the two components
    * have the same data in this example.
    */
    printf ("First component of the entire image:\n");

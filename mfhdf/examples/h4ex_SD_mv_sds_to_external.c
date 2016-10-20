@@ -9,7 +9,7 @@ int main()
 
    /************************* Variable declaration **************************/
 
-   int32 sd_id, sds_id, sds_index, offset;
+   int32 sd_id, sds_id, sds_index;
    intn  status;
 
    /********************* End of variable declaration ***********************/
@@ -22,7 +22,7 @@ int main()
    /*
    * Select the first data set.
    */
-   sds_index = 0;   
+   sds_index = 0;
    sds_id = SDselect (sd_id, sds_index);
 
    /*

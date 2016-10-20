@@ -75,9 +75,9 @@ int main( )
    */
    for (i = 0; i < N_RECORDS; i++)
    {
-      temp[i] = 1.11 * (i+1);
+      temp[i] = (float32)(1.11 * (i+1));
       height[i] = i;
-      speed[i] = 1.11 * (i+1);
+      speed[i] = (float32)(1.11 * (i+1));
       ident[i] = 'A' + i;
    }
 
