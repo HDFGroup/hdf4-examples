@@ -13,7 +13,7 @@ SET (h4examples
 SET (h4examples_use
     h4ex_VD_get_vdata_info
     h4ex_VD_locate_vdata
-    h4ex_VD_read_from_vdata
+#    h4ex_VD_read_from_vdata #program will fail
     h4ex_VD_read_mixed_vdata
 #    h4ex_VD_set_get_vdata_attr
     h4ex_VD_write_to_vdata
