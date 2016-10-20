@@ -45,7 +45,7 @@ int main( )
    * Attach to the vdata for reading if it is found, otherwise
    * exit the program.
    */
-   if (vdata_ref == 0) exit();
+   if (vdata_ref == 0) exit(1);
    vdata_id = VSattach (file_id, vdata_ref, "r");
 
    /*
