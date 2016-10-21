@@ -332,6 +332,8 @@ if (PACK_EXAMPLE_SOURCE)
     set (CPACK_GENERATOR "ZIP")
     set (CPACK_SOURCE_GENERATOR "ZIP")
   endif()
+  set (CPACK_TOPLEVEL_TAG "HDF4Examples")
+  set (CPACK_SOURCE_TOPLEVEL_TAG "HDF4Examples")
   set (CPACK_SOURCE_PACKAGE_FILE_NAME "HDF4Examples-${CPACK_PACKAGE_VERSION}-Source")
   INCLUDE(CPack)
   # Installation types
