@@ -105,9 +105,9 @@ int main( )
    * Enter data values into each record.
    */
    for (rec_num = 0; rec_num < N_RECORDS; rec_num++) {
-      source[rec_num].temp = 1.11 * (rec_num+1);
+      source[rec_num].temp = (float32)(1.11 * (rec_num+1));
       source[rec_num].height = rec_num;
-      source[rec_num].speed = 1.11 * (rec_num+1);
+      source[rec_num].speed = (float32)(1.11 * (rec_num+1));
       source[rec_num].ident = 'A' + rec_num;
    }
 

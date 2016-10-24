@@ -71,12 +71,12 @@ int main( )
    */
    for (rec_num = 0; rec_num < N_RECORDS; rec_num++)
    {
-      data_buf[rec_num][0] = 1.0 * rec_num;
-      data_buf[rec_num][1] = 2.0 * rec_num;
-      data_buf[rec_num][2] = 3.0 * rec_num;
-      data_buf[rec_num][3] = 0.1 + rec_num;
-      data_buf[rec_num][4] = 0.0;
-      data_buf[rec_num][5] = 65.0;
+      data_buf[rec_num][0] = (float32)(1.0 * rec_num);
+      data_buf[rec_num][1] = (float32)(2.0 * rec_num);
+      data_buf[rec_num][2] = (float32)(3.0 * rec_num);
+      data_buf[rec_num][3] = (float32)(0.1 + rec_num);
+      data_buf[rec_num][4] = (float32)(0.0);
+      data_buf[rec_num][5] = (float32)(65.0);
    }
 
    /*

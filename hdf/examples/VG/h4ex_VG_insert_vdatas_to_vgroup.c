@@ -65,7 +65,7 @@ int main( )
          plist[i][j] = ++k;
 
    for (i = 0; i < N_RECORDS; i++)
-      tmp[i] = i * 10.0;
+      tmp[i] = (float32)(i * 10.0);
 
    /*
    * Create the vgroup then set its name and class.  Note that the vgroup's

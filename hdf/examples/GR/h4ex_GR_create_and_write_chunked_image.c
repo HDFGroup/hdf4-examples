@@ -12,8 +12,7 @@ main( )
          gr_id,          /* GR interface identifier */
          ri_id,          /* raster image identifier */
          dims[2],        /* dimension sizes of the image array */
-         start[2],       /* start position to write each chunk */
-         interlace_mode; /* interlace mode of the image */
+         start[2];       /* interlace mode of the image */
    HDF_CHUNK_DEF chunk_def;     /* Chunk defintion set */
    int32 chunk00[] = {110, 111, 112, 120, 121, 122,
                       130, 131, 132, 140, 141, 142,

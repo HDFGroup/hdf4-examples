@@ -56,8 +56,8 @@ int main( )
    {
       for (j = 0; j < X_LENGTH; j++)
       {
-         image_buf[i][j][0] = (i + j) + 1;     /* first component */
-         image_buf[i][j][1] = (i + j) + 1;     /* second component */
+         image_buf[i][j][0] = (int16)(i + j) + 1;     /* first component */
+         image_buf[i][j][1] = (int16)(i + j) + 1;     /* second component */
       }
     }
 
