@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.1.0)
+cmake_minimum_required (VERSION 3.2.2)
 project (HDF4Examples_JAVA_GR Java)
 
 set (CMAKE_VERBOSE_MAKEFILE 1)
@@ -15,19 +15,19 @@ set (HDF_JAVA_EXAMPLES
 
 if (WIN32 AND NOT CYGWIN)
   set (CMAKE_JAVA_INCLUDE_FLAG_SEP ";")
-else (WIN32 AND NOT CYGWIN)
+else ()
   set (CMAKE_JAVA_INCLUDE_FLAG_SEP ":")
-endif (WIN32 AND NOT CYGWIN)
+endif ()
 
 set (CMAKE_JAVA_CLASSPATH ".")
 foreach (CMAKE_INCLUDE_PATH ${CMAKE_JAVA_INCLUDE_PATH})
   set (CMAKE_JAVA_CLASSPATH "${CMAKE_JAVA_CLASSPATH}${CMAKE_JAVA_INCLUDE_FLAG_SEP}${CMAKE_INCLUDE_PATH}")
-endforeach (CMAKE_INCLUDE_PATH)
+endforeach ()
 
 foreach (HCP_JAR ${CMAKE_JAVA_INCLUDE_PATH})
   get_filename_component (_HCP_FILE ${HCP_JAR} NAME)
   set (HDFJAVA_CLASSJARS "${_HCP_FILE} ${HDFJAVA_CLASSJARS}")
-endforeach (HCP_JAR ${CMAKE_JAVA_INCLUDE_PATH})
+endforeach ()
 
 foreach (example ${HDF_JAVA_EXAMPLES})
   file (WRITE ${PROJECT_BINARY_DIR}/Manifest.txt
@@ -37,7 +37,7 @@ Class-Path: ${HDFJAVA_CLASSJARS}
   )
   ADD_JAR (${example} SOURCES ${example}.java MANIFEST ${PROJECT_BINARY_DIR}/Manifest.txt)
   get_target_property (${example}_JAR_FILE ${example} JAR_FILE)
-endforeach (example ${HDF_JAVA_EXAMPLES})
+endforeach ()
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
   set (CMD_ARGS "-Dhdf.hdflib.HDFLibrary.loadLibraryName=hdf_java_debug;")
@@ -62,9 +62,9 @@ if (BUILD_TESTING)
     )
     if (NOT "${last_test}" STREQUAL "")
       set_tests_properties (jnative-h4-${resultfile} PROPERTIES DEPENDS ${last_test})
-    endif (NOT "${last_test}" STREQUAL "")
+    endif ()
     set (last_test "jnative-h5-${resultfile}")
-  endmacro (ADD_H4_TEST file)
+  endmacro ()
 
   foreach (example ${HDF_JAVA_EXAMPLES})
     add_test (
@@ -77,7 +77,7 @@ if (BUILD_TESTING)
     )
     if (NOT "${last_test}" STREQUAL "")
       set_tests_properties (jnative-h4-${example}-clearall-objects PROPERTIES DEPENDS ${last_test})
-    endif (NOT "${last_test}" STREQUAL "")
+    endif ()
     add_test (
         NAME jnative-h4-${example}-copy-objects
         COMMAND    ${CMAKE_COMMAND}
@@ -88,6 +88,6 @@ if (BUILD_TESTING)
     set_tests_properties (jnative-h4-${example}-copy-objects PROPERTIES DEPENDS jnative-h4-${example}-clearall-objects)
     set (last_test "jnative-h4-${example}-copy-objects")
     ADD_H4_TEST (${example} 0)
-  endforeach (example ${HDF_JAVA_EXAMPLES})
+  endforeach ()
 
-endif (BUILD_TESTING)
+endif ()

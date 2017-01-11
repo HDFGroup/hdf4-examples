@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.1.0)
+cmake_minimum_required (VERSION 3.2.2)
 PROJECT (HDF4Examples_HDF_FORTRAN C CXX Fortran)
 # --------------------------------------------------------------------
 # Notes: When creating examples they should be prefixed
