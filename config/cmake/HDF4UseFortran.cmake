@@ -3,7 +3,7 @@
 #
 #-------------------------------------------------------------------------------
 enable_language (Fortran)
-  
+
 #-----------------------------------------------------------------------------
 # Detect name mangling convention used between Fortran and C
 #-----------------------------------------------------------------------------
@@ -32,9 +32,9 @@ MACRO (CHECK_FORTRAN_FEATURE FUNCTION CODE VARIABLE)
     if (CMAKE_REQUIRED_LIBRARIES)
       set (CHECK_FUNCTION_EXISTS_ADD_LIBRARIES
           "-DLINK_LIBRARIES:STRING=${CMAKE_REQUIRED_LIBRARIES}")
-    else (CMAKE_REQUIRED_LIBRARIES)
+    else ()
       set (CHECK_FUNCTION_EXISTS_ADD_LIBRARIES)
-    endif (CMAKE_REQUIRED_LIBRARIES)
+    endif ()
     file (WRITE
         ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/testFortranCompiler.f
         "${CODE}"
@@ -65,7 +65,7 @@ MACRO (CHECK_FORTRAN_FEATURE FUNCTION CODE VARIABLE)
           "${OUTPUT}\n\n")
     endif ()
 
-ENDMACRO (CHECK_FORTRAN_FEATURE)
+ENDMACRO ()
 
 #-----------------------------------------------------------------------------
 # Configure Checks which require Fortran compilation must go in here
@@ -161,7 +161,7 @@ CHECK_FORTRAN_FEATURE(iso_c_binding
             IMPLICIT NONE
             TYPE(C_PTR) :: ptr
             TYPE(C_FUNPTR) :: funptr
-            INTEGER(C_INT64_T) :: c_int64_type 
+            INTEGER(C_INT64_T) :: c_int64_type
             CHARACTER(LEN=80, KIND=c_char), TARGET :: ichr
             ptr = C_LOC(ichr(1:1))
        END PROGRAM

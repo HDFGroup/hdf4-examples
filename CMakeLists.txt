@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.1.0)
+cmake_minimum_required (VERSION 3.2.2)
 PROJECT (HDF4Examples C CXX)
 
 #-----------------------------------------------------------------------------
@@ -59,6 +59,9 @@ set (CMAKE_Fortran_MODULE_DIRECTORY
 set (CMAKE_JAVA_TARGET_OUTPUT_DIR
     ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all java jars."
 )
+set (CMAKE_PDB_OUTPUT_DIRECTORY
+    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all pdb files."
+)
 
 #-----------------------------------------------------------------------------
 # When building utility executables that generate other (source) files :
@@ -103,7 +106,7 @@ endif ()
 if (CMAKE_COMPILER_IS_GNUCC)
   set (CMAKE_C_FLAGS "${CMAKE_ANSI_CFLAGS} ${CMAKE_C_FLAGS} -std=c99 -fomit-frame-pointer -finline-functions -fno-common")
 endif ()
-if (CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_LOADED)
   set (CMAKE_CXX_FLAGS "${CMAKE_ANSI_CFLAGS} ${CMAKE_CXX_FLAGS} -fomit-frame-pointer -finline-functions -fno-common")
 endif ()
 
@@ -162,7 +165,7 @@ if (NOT HDF4_HDF4_HEADER)
         set (CMAKE_JAVA_INCLUDE_PATH "${CMAKE_JAVA_INCLUDE_PATH};${HDF4_JAVA_INCLUDE_DIRS}")
         message (STATUS "HDF4 jars:${HDF4_JAVA_INCLUDE_DIRS}}")
       endif ()
-    else (NOT HDF4_static_C_FOUND AND NOT HDF4_shared_C_FOUND)
+    else ()
       if (BUILD_SHARED_LIBS AND HDF4_shared_C_FOUND)
         set (LINK_LIBS ${LINK_LIBS} ${HDF4_C_SHARED_LIBRARY})
       else ()
@@ -174,27 +177,27 @@ if (NOT HDF4_HDF4_HEADER)
         else ()
           set (LINK_LIBS ${LINK_LIBS} ${HDF4_FORTRAN_STATIC_LIBRARY})
         endif ()
-      endif (HDF_BUILD_FORTRAN)
+      endif ()
       if (HDF_BUILD_JAVA)
         set (CMAKE_JAVA_INCLUDE_PATH "${CMAKE_JAVA_INCLUDE_PATH};${HDF4_JAVA_INCLUDE_DIRS}")
         message (STATUS "HDF4 jars:${HDF4_JAVA_INCLUDE_DIRS}}")
       endif ()
-    endif (NOT HDF4_static_C_FOUND AND NOT HDF4_shared_C_FOUND)
+    endif ()
 
     set (HDF4_HAVE_HDF_H 1)
     set (HDF4_HAVE_HDF4 1)
     set (HDF4_HDF4_HEADER "hdf.h")
     set (HDF4_INCLUDE_DIR_GEN ${HDF4_INCLUDE_DIR})
     message (STATUS "HDF4-${HDF4_VERSION_STRING} found: INC=${HDF4_INCLUDE_DIR} TOOLS=${HDF4_TOOLS_DIR}")
-  else (HDF4_FOUND)
+  else ()
     message (FATAL_ERROR " HDF4 is Required for HDF4 Examples")
-  endif (HDF4_FOUND)
+  endif ()
   set (HDF4_PACKAGE_NAME ${SEARCH_PACKAGE_NAME})
-else (NOT HDF4_HDF4_HEADER)
+else ()
   # This project is being called from within another and HDF4 is already configured
   set (HDF4_HAVE_HDF_H 1)
   set (HDF4_HAVE_HDF4 1)
-endif (NOT HDF4_HDF4_HEADER)
+endif ()
 
 INCLUDE_DIRECTORIES (${HDF4_INCLUDE_DIR})
 if (HDF_BUILD_FORTRAN)
@@ -248,7 +251,7 @@ endif ()
 if (CMAKE_COMPILER_IS_GNUCC)
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fmessage-length=0")
 endif ()
-if (CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_LOADED)
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmessage-length=0")
 endif ()
 
@@ -297,7 +300,7 @@ if (EXISTS "${PROJECT_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${PROJECT_SOU
     add_subdirectory (${PROJECT_SOURCE_DIR}/mfhdf/fortran ${PROJECT_BINARY_DIR}/mfhdf/fortran)
     add_subdirectory (${PROJECT_SOURCE_DIR}/hdf/fortran ${PROJECT_BINARY_DIR}/hdf/fortran)
   endif ()
-endif (EXISTS "${PROJECT_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${PROJECT_SOURCE_DIR}/mfhdf/fortran")
+endif ()
 
 #-----------------------------------------------------------------------------
 # Option to build JAVA examples
@@ -308,7 +311,7 @@ if (EXISTS "${PROJECT_SOURCE_DIR}/JAVA" AND IS_DIRECTORY "${PROJECT_SOURCE_DIR}/
     include (${HDF4EX_RESOURCES_DIR}/UseJava.cmake)
     add_subdirectory (${PROJECT_SOURCE_DIR}/JAVA ${PROJECT_BINARY_DIR}/JAVA)
   endif ()
-endif (EXISTS "${PROJECT_SOURCE_DIR}/JAVA" AND IS_DIRECTORY "${PROJECT_SOURCE_DIR}/JAVA")
+endif ()
 
 #-----------------------------------------------------------------------------
 # Configure the README.txt file for the binary package
@@ -350,4 +353,4 @@ if (PACK_EXAMPLE_SOURCE)
       GROUP Development
       INSTALL_TYPES Full
   )
-endif (PACK_EXAMPLE_SOURCE)
+endif ()
