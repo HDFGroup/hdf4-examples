@@ -204,6 +204,11 @@ if (HDF_BUILD_FORTRAN)
   INCLUDE_DIRECTORIES (${HDF4_INCLUDE_DIR_FORTRAN})
 endif ()
 message (STATUS "HDF4 link libs: ${LINK_LIBS}")
+if (WIN32)
+  set(CMAKE_TEST_LIB_DIRECTORY "${HDF4_TOOLS_DIR}")
+else ()
+  set(CMAKE_TEST_LIB_DIRECTORY "${HDF4_LIBRARY_PATH}")
+endif ()
 
 #-----------------------------------------------------------------------------
 # Option to use Shared/Static libs, default is static

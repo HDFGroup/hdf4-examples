@@ -43,10 +43,6 @@ IF (BUILD_TESTING)
         NAME ${testname}-clearall
         COMMAND    ${CMAKE_COMMAND}
             -E remove
-            ${testname}.out
-            ${testname}.out.err
-            ${testname}.ddl.out
-            ${testname}.ddl.out.err
             ${testname}.hdf
     )
     ADD_TEST (
@@ -58,6 +54,7 @@ IF (BUILD_TESTING)
             -D "TEST_EXPECT=0"
             -D "TEST_OUTPUT=${testname}.out"
             -D "TEST_REFERENCE=${testname}.tst"
+            -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
             -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
     )
     SET_TESTS_PROPERTIES(${testname} PROPERTIES DEPENDS ${testname}-clearall)
@@ -71,6 +68,7 @@ IF (BUILD_TESTING)
               -D "TEST_OUTPUT=${testname}.ddl.out"
               -D "TEST_EXPECT=0"
               -D "TEST_REFERENCE=${testname}.ddl"
+              -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
               -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
       )
       SET_TESTS_PROPERTIES(${testname}-HDP PROPERTIES DEPENDS ${testname})
