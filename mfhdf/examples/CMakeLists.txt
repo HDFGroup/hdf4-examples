@@ -28,7 +28,7 @@ IF (BUILD_TESTING)
   ADD_TEST (
       NAME MFHDF_EXAMPLES-clearall-objects
       COMMAND    ${CMAKE_COMMAND}
-          -E remove 
+          -E remove
           SDS.hdf
           SDSchunked.hdf
           SDScompressed.hdf
@@ -49,7 +49,18 @@ FOREACH (example ${examples})
   TARGET_NAMING (mf_${example} ${LIB_TYPE})
   TARGET_LINK_LIBRARIES (mf_${example} ${LINK_LIBS})
   IF (BUILD_TESTING)
-    ADD_TEST (NAME mftest_${example} COMMAND $<TARGET_FILE:mf_${example}>)
+    ADD_TEST (
+        NAME mftest_${example}
+        COMMAND "${CMAKE_COMMAND}"
+            -D "TEST_PROGRAM=$<TARGET_FILE:mf_${example}>"
+            -D "TEST_ARGS:STRING="
+            -D "TEST_FOLDER=${PROJECT_BINARY_DIR}"
+            -D "TEST_EXPECT=0"
+            -D "TEST_SKIP_COMPARE=TRUE"
+            -D "TEST_OUTPUT=${testname}.out"
+            -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
+            -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
+    )
     IF (NOT "${last_test}" STREQUAL "")
       SET_TESTS_PROPERTIES (mftest_${example} PROPERTIES DEPENDS ${last_test} LABELS ${PROJECT_NAME})
     ELSE (NOT "${last_test}" STREQUAL "")

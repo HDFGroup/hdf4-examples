@@ -188,6 +188,7 @@ if (NOT TEST_SKIP_COMPARE)
   if (NOT ${TEST_RESULT} STREQUAL 0)
     message (FATAL_ERROR "Failed: The output of ${TEST_OUTPUT} did not match ${TEST_REFERENCE}")
   endif ()
+endif ()
 
 # everything went fine...
 message ("Passed: The output of ${TEST_PROGRAM} matches ${TEST_REFERENCE}")

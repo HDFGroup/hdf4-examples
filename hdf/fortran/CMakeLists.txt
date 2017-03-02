@@ -27,30 +27,30 @@ INCLUDE_DIRECTORIES (
 # Define Sources
 #-----------------------------------------------------------------------------
 SET (examples
-    h4ex_VD_create_vdatas 
+    h4ex_VD_create_vdatas
     h4ex_VD_write_mixed_vdata
-    h4ex_VD_write_to_vdata 
+    h4ex_VD_write_to_vdata
     h4ex_VD_create_onefield_vdatas
-    h4ex_VD_read_from_vdata 
+    h4ex_VD_read_from_vdata
     h4ex_VD_read_mixed_vdata
-    h4ex_VD_get_vdata_info 
-    h4ex_VD_locate_vdata 
+    h4ex_VD_get_vdata_info
+    h4ex_VD_locate_vdata
     h4ex_VG_create_vgroup
-#    h4ex_VG_add_sds_to_vgroup 
+#    h4ex_VG_add_sds_to_vgroup
     h4ex_VG_insert_vdatas_to_vgroup
-    h4ex_VG_set_get_vgroup_attr 
+    h4ex_VG_set_get_vgroup_attr
     h4ex_VG_vgroup_contents
-    h4ex_VG_get_vgroup_info 
+    h4ex_VG_get_vgroup_info
     h4ex_GR_create_and_write_image
     h4ex_GR_create_and_write_chunked_image
-    h4ex_GR_modify_image 
-    h4ex_GR_set_attribute 
+    h4ex_GR_modify_image
+    h4ex_GR_set_attribute
     h4ex_GR_get_attribute
-    h4ex_GR_write_palette 
-    h4ex_GR_image_info 
+    h4ex_GR_write_palette
+    h4ex_GR_image_info
     h4ex_GR_read_image
-    h4ex_AN_create_annotation 
-    h4ex_AN_get_annotation_info 
+    h4ex_AN_create_annotation
+    h4ex_AN_get_annotation_info
     h4ex_AN_read_annotation
     #h4ex_VD_set_get_vdata_attr
 )
@@ -66,7 +66,7 @@ IF (BUILD_TESTING)
   ADD_TEST (
       NAME HDF_FORTRAN_EXAMPLES-clearall-objects
       COMMAND    ${CMAKE_COMMAND}
-          -E remove 
+          -E remove
           General_HDFobjects.hdf
           General_RImages.hdf
           General_Vdatas.hdf
@@ -91,7 +91,18 @@ FOREACH (example ${examples})
   SET_TARGET_PROPERTIES (f_ex_${example} PROPERTIES LINKER_LANGUAGE Fortran)
   TARGET_LINK_LIBRARIES (f_ex_${example} ${LINK_LIBS})
   IF (BUILD_TESTING)
-    ADD_TEST (NAME f_extest_${example} COMMAND $<TARGET_FILE:f_ex_${example}>)
+    ADD_TEST (
+        NAME f_extest_${example}
+        COMMAND "${CMAKE_COMMAND}"
+            -D "TEST_PROGRAM=$<TARGET_FILE:f_ex_${example}>"
+            -D "TEST_ARGS:STRING="
+            -D "TEST_FOLDER=${PROJECT_BINARY_DIR}"
+            -D "TEST_EXPECT=0"
+            -D "TEST_SKIP_COMPARE=TRUE"
+            -D "TEST_OUTPUT=${testname}.out"
+            -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
+            -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
+    )
     IF (NOT "${last_test}" STREQUAL "")
       SET_TESTS_PROPERTIES (f_extest_${example} PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
     ELSE (NOT "${last_test}" STREQUAL "")
@@ -108,7 +119,18 @@ SET_TARGET_PROPERTIES (f_ex_h4ex_VG_add_sds_to_vgroup PROPERTIES LINKER_LANGUAGE
 TARGET_LINK_LIBRARIES (f_ex_h4ex_VG_add_sds_to_vgroup ${LINK_LIBS})
 
 IF (BUILD_TESTING)
-  ADD_TEST (NAME f_extest_h4ex_VG_add_sds_to_vgroup COMMAND $<TARGET_FILE:f_ex_h4ex_VG_add_sds_to_vgroup>)
+  ADD_TEST (
+      NAME f_extest_h4ex_VG_add_sds_to_vgroup
+      COMMAND "${CMAKE_COMMAND}"
+            -D "TEST_PROGRAM=$<TARGET_FILE:f_ex_h4ex_VG_add_sds_to_vgroup>"
+            -D "TEST_ARGS:STRING="
+            -D "TEST_FOLDER=${PROJECT_BINARY_DIR}"
+            -D "TEST_EXPECT=0"
+            -D "TEST_SKIP_COMPARE=TRUE"
+            -D "TEST_OUTPUT=${testname}.out"
+            -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
+            -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
+  )
   IF (NOT "${last_test}" STREQUAL "")
     SET_TESTS_PROPERTIES (f_extest_h4ex_VG_add_sds_to_vgroup PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
   ELSE (NOT "${last_test}" STREQUAL "")
@@ -124,6 +146,9 @@ FOREACH (example ${skip_examples})
   SET_TARGET_PROPERTIES (f_ex_${example} PROPERTIES LINKER_LANGUAGE Fortran)
   TARGET_LINK_LIBRARIES (f_ex_${example} ${LINK_LIBS})
   IF (BUILD_TESTING)
-    ADD_TEST (NAME f_extest_${example} COMMAND ${CMAKE_COMMAND} -E echo "SKIP f_extest_${example}")
+    ADD_TEST (
+        NAME f_extest_${example}
+        COMMAND ${CMAKE_COMMAND} -E echo "SKIP f_extest_${example}"
+    )
   ENDIF (BUILD_TESTING)
 ENDFOREACH (example ${skip_examples})
