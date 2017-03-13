@@ -179,6 +179,7 @@ macro (HDF_IMPORT_SET_LIB_OPTIONS libtarget libname libtype libversion)
       )
     endif ()
   endif ()
+
 endmacro ()
 
 #-------------------------------------------------------------------------------

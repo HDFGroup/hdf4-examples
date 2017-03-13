@@ -1,31 +1,14 @@
 cmake_minimum_required (VERSION 3.2.2)
-PROJECT (HDF4Examples_MFHDF)
+project (HDF4Examples_MFHDF)
 
 #-----------------------------------------------------------------------------
 # Define Sources
 #-----------------------------------------------------------------------------
-SET (examples
-    h4ex_SD_create_sds
-    h4ex_SD_write_to_sds
-    h4ex_SD_write_slab
-    h4ex_SD_alter_sds_values
-    h4ex_SD_unlimited_sds
-    h4ex_SD_compress_sds
-    h4ex_SD_mv_sds_to_external
-    h4ex_SD_read_from_sds
-    h4ex_SD_read_subsets
-    h4ex_SD_get_info
-    h4ex_SD_find_sds_by_name
-    h4ex_SD_set_get_dim_info
-    h4ex_SD_dimscale_vs_sds
-    h4ex_SD_set_attr
-    h4ex_SD_get_attr
-    h4ex_SD_chunking_example
-)
+include (C_sourcefiles.cmake)
 
-IF (BUILD_TESTING)
+if (BUILD_TESTING)
   # Remove any output file left over from previous test run
-  ADD_TEST (
+  add_test (
       NAME MFHDF_EXAMPLES-clearall-objects
       COMMAND    ${CMAKE_COMMAND}
           -E remove
@@ -36,36 +19,37 @@ IF (BUILD_TESTING)
           SLABS.hdf
           ExternalSDS
   )
-  IF (NOT "${last_test}" STREQUAL "")
-    SET_TESTS_PROPERTIES (MFHDF_EXAMPLES-clearall-objects PROPERTIES DEPENDS ${last_test} LABELS ${PROJECT_NAME})
-  ELSE (NOT "${last_test}" STREQUAL "")
-    SET_TESTS_PROPERTIES (MFHDF_EXAMPLES-clearall-objects PROPERTIES LABELS ${PROJECT_NAME})
-  ENDIF (NOT "${last_test}" STREQUAL "")
-  SET (last_test "MFHDF_EXAMPLES-clearall-objects")
-ENDIF (BUILD_TESTING)
+  if (NOT "${last_test}" STREQUAL "")
+    set_tests_properties (MFHDF_EXAMPLES-clearall-objects PROPERTIES DEPENDS ${last_test} LABELS ${PROJECT_NAME})
+  else ()
+    set_tests_properties (MFHDF_EXAMPLES-clearall-objects PROPERTIES LABELS ${PROJECT_NAME})
+  endif ()
+  set (last_test "MFHDF_EXAMPLES-clearall-objects")
+endif ()
 
-FOREACH (example ${examples})
-  ADD_EXECUTABLE (mf_${example} ${PROJECT_SOURCE_DIR}/${example}.c)
-  TARGET_NAMING (mf_${example} ${LIB_TYPE})
-  TARGET_LINK_LIBRARIES (mf_${example} ${LINK_LIBS})
-  IF (BUILD_TESTING)
-    ADD_TEST (
-        NAME mftest_${example}
+foreach (example ${examples})
+  get_filename_component (example_name ${example} NAME_WE)
+  add_executable (mf_${example_name} ${PROJECT_SOURCE_DIR}/${example})
+  TARGET_NAMING (mf_${example_name} ${LIB_TYPE})
+  target_link_libraries (mf_${example_name} ${LINK_LIBS})
+  if (BUILD_TESTING)
+    add_test (
+        NAME mftest_${example_name}
         COMMAND "${CMAKE_COMMAND}"
-            -D "TEST_PROGRAM=$<TARGET_FILE:mf_${example}>"
+            -D "TEST_PROGRAM=$<TARGET_FILE:mf_${example_name}>"
             -D "TEST_ARGS:STRING="
             -D "TEST_FOLDER=${PROJECT_BINARY_DIR}"
             -D "TEST_EXPECT=0"
             -D "TEST_SKIP_COMPARE=TRUE"
-            -D "TEST_OUTPUT=${testname}.out"
+            -D "TEST_OUTPUT=${example_name}.out"
             -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
             -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
     )
-    IF (NOT "${last_test}" STREQUAL "")
-      SET_TESTS_PROPERTIES (mftest_${example} PROPERTIES DEPENDS ${last_test} LABELS ${PROJECT_NAME})
-    ELSE (NOT "${last_test}" STREQUAL "")
-      SET_TESTS_PROPERTIES (mftest_${example} PROPERTIES LABELS ${PROJECT_NAME})
-    ENDIF (NOT "${last_test}" STREQUAL "")
-    SET (last_test "mftest_${example}")
-  ENDIF (BUILD_TESTING)
-ENDFOREACH (example ${examples})
+    if (NOT "${last_test}" STREQUAL "")
+      set_tests_properties (mftest_${example_name} PROPERTIES DEPENDS ${last_test} LABELS ${PROJECT_NAME})
+    else ()
+      set_tests_properties (mftest_${example_name} PROPERTIES LABELS ${PROJECT_NAME})
+    endif ()
+    set (last_test "mftest_${example_name}")
+  endif ()
+endforeach ()

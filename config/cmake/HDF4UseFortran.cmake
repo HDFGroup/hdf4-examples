@@ -27,7 +27,7 @@ set (H4_F77_FUNC_ "H4_F77_FUNC_(name,NAME) ${CMAKE_MATCH_1}")
 # The provided CMake Fortran macros don't provide a general check function
 # so this one is used for a sizeof test.
 #-----------------------------------------------------------------------------
-MACRO (CHECK_FORTRAN_FEATURE FUNCTION CODE VARIABLE)
+macro (CHECK_FORTRAN_FEATURE FUNCTION CODE VARIABLE)
     message (STATUS "Testing Fortran ${FUNCTION}")
     if (CMAKE_REQUIRED_LIBRARIES)
       set (CHECK_FUNCTION_EXISTS_ADD_LIBRARIES
@@ -65,7 +65,7 @@ MACRO (CHECK_FORTRAN_FEATURE FUNCTION CODE VARIABLE)
           "${OUTPUT}\n\n")
     endif ()
 
-ENDMACRO ()
+endmacro ()
 
 #-----------------------------------------------------------------------------
 # Configure Checks which require Fortran compilation must go in here
@@ -176,5 +176,5 @@ if (CMAKE_Fortran_COMPILER MATCHES ifort)
     if (WIN32)
         set (CMAKE_Fortran_FLAGS_DEBUG "/debug:full /dbglibs " CACHE "flags" STRING FORCE)
         set (CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG" CACHE "flags" STRING FORCE)
-    endif (WIN32)
-endif (CMAKE_Fortran_COMPILER MATCHES ifort)
+    endif ()
+endif ()

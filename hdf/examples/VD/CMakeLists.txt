@@ -1,52 +1,34 @@
 cmake_minimum_required (VERSION 3.2.2)
-PROJECT (HDF4Examples_HDF_VD C CXX)
+project (HDF4Examples_HDF_VD C CXX)
 
 #-----------------------------------------------------------------------------
 # Define Sources
 #-----------------------------------------------------------------------------
-SET (h4examples
-    h4ex_VD_create_onefield_vdatas
-    h4ex_VD_create_vdatas
-    h4ex_VD_write_mixed_vdata_struct
-    h4ex_VD_write_mixed_vdata
-)
-SET (h4examples_use
-    h4ex_VD_get_vdata_info
-    h4ex_VD_locate_vdata
-#    h4ex_VD_read_from_vdata #program will fail
-    h4ex_VD_read_mixed_vdata
-#    h4ex_VD_set_get_vdata_attr
-    h4ex_VD_write_to_vdata
-)
-SET (h4examples_files
-    General_Vdatas.hdf
-    General_Vdatas2.hdf
-    General_Vdatas3.hdf
-    Packed_Vdata.hdf
-    Two_Vdatas.hdf
-)
+include (C_sourcefiles.cmake)
 
-FOREACH (example ${h4examples})
-  ADD_EXECUTABLE (hdf_${example} ${PROJECT_SOURCE_DIR}/${example}.c)
-  TARGET_NAMING (hdf_${example} ${LIB_TYPE})
-  TARGET_LINK_LIBRARIES (hdf_${example} ${LINK_LIBS})
-ENDFOREACH (example ${h4examples})
+foreach (example ${h4examples})
+  get_filename_component (example_name ${example} NAME_WE)
+  add_executable (hdf_${example_name} ${PROJECT_SOURCE_DIR}/${example})
+  TARGET_NAMING (hdf_${example_name} ${LIB_TYPE})
+  target_link_libraries (hdf_${example_name} ${LINK_LIBS})
+endforeach ()
 
-FOREACH (example ${h4examples_use})
-  ADD_EXECUTABLE (hdf_${example} ${PROJECT_SOURCE_DIR}/${example}.c)
-  TARGET_NAMING (hdf_${example} ${LIB_TYPE})
-  TARGET_LINK_LIBRARIES (hdf_${example} ${LINK_LIBS})
-ENDFOREACH (example ${h4examples_use})
+foreach (example ${h4examples_use})
+  get_filename_component (example_name ${example} NAME_WE)
+  add_executable (hdf_${example_name} ${PROJECT_SOURCE_DIR}/${example})
+  TARGET_NAMING (hdf_${example_name} ${LIB_TYPE})
+  target_link_libraries (hdf_${example_name} ${LINK_LIBS})
+endforeach ()
 
-IF (BUILD_TESTING)
-  MACRO (ADD_H4_TEST testname testcreate)
-    ADD_TEST (
+if (BUILD_TESTING)
+  macro (ADD_H4_TEST testname testcreate)
+    add_test (
         NAME ${testname}-clearall
         COMMAND    ${CMAKE_COMMAND}
             -E remove
             ${testname}.hdf
     )
-    ADD_TEST (
+    add_test (
         NAME ${testname}
         COMMAND "${CMAKE_COMMAND}"
             -D "TEST_PROGRAM=$<TARGET_FILE:hdf_${testname}>"
@@ -58,9 +40,9 @@ IF (BUILD_TESTING)
             -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
             -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
     )
-    SET_TESTS_PROPERTIES(${testname} PROPERTIES DEPENDS ${testname}-clearall)
-    IF (HDF4_BUILD_TOOLS AND ${testcreate} STREQUAL "1")
-      ADD_TEST (
+    set_tests_properties(${testname} PROPERTIES DEPENDS ${testname}-clearall)
+    if (HDF4_BUILD_TOOLS AND ${testcreate} STREQUAL "1")
+      add_test (
           NAME ${testname}-HDP
           COMMAND "${CMAKE_COMMAND}"
               -D "TEST_PROGRAM=$<TARGET_FILE:hdf4::hdp>"
@@ -72,13 +54,14 @@ IF (BUILD_TESTING)
               -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
               -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
       )
-      SET_TESTS_PROPERTIES(${testname}-HDP PROPERTIES DEPENDS ${testname})
-    ENDIF (HDF4_BUILD_TOOLS AND ${testcreate} STREQUAL "1")
-  ENDMACRO (ADD_H4_TEST)
+      set_tests_properties(${testname}-HDP PROPERTIES DEPENDS ${testname})
+    endif ()
+  endmacro ()
 
-  FOREACH (example ${h4examples})
-    SET (testsrc "${PROJECT_SOURCE_DIR}/testfiles/${example}")
-    SET (testdest "${PROJECT_BINARY_DIR}/${example}")
+  foreach (example ${h4examples})
+    get_filename_component (example_name ${example} NAME_WE)
+    set (testsrc "${PROJECT_SOURCE_DIR}/testfiles/${example_name}")
+    set (testdest "${PROJECT_BINARY_DIR}/${example_name}")
     ADD_CUSTOM_COMMAND (
         OUTPUT     "${testdest}.tst"
         COMMAND    ${CMAKE_COMMAND}
@@ -86,7 +69,7 @@ IF (BUILD_TESTING)
         DEPENDS    "${testsrc}.tst"
     )
     list(APPEND HDF4Examples_HDF_VD_TEST_FILES "${testdest}.tst")
-    IF (HDF4_BUILD_TOOLS)
+    if (HDF4_BUILD_TOOLS)
       ADD_CUSTOM_COMMAND (
           OUTPUT     "${testdest}.ddl"
           COMMAND    ${CMAKE_COMMAND}
@@ -94,12 +77,13 @@ IF (BUILD_TESTING)
           DEPENDS    "${testsrc}.ddl"
       )
       list(APPEND HDF4Examples_HDF_VD_TEST_FILES "${testdest}.ddl")
-    ENDIF (HDF4_BUILD_TOOLS)
-  ENDFOREACH (example ${h4examples})
+    endif ()
+  endforeach ()
 
-  FOREACH (example ${h4examples_use})
-    SET (testsrc "${PROJECT_SOURCE_DIR}/testfiles/${example}")
-    SET (testdest "${PROJECT_BINARY_DIR}/${example}")
+  foreach (example ${h4examples_use})
+    get_filename_component (example_name ${example} NAME_WE)
+    set (testsrc "${PROJECT_SOURCE_DIR}/testfiles/${example_name}")
+    set (testdest "${PROJECT_BINARY_DIR}/${example_name}")
     ADD_CUSTOM_COMMAND (
         OUTPUT     "${testdest}.tst"
         COMMAND    ${CMAKE_COMMAND}
@@ -107,11 +91,11 @@ IF (BUILD_TESTING)
         DEPENDS    "${testsrc}.tst"
     )
     list(APPEND HDF4Examples_HDF_VD_TEST_FILES "${testdest}.tst")
-  ENDFOREACH (example ${h4examples_use})
+  endforeach ()
 
-  FOREACH (ex_file ${h4examples_files})
-    SET (testsrc "${PROJECT_SOURCE_DIR}/testfiles/${ex_file}")
-    SET (testdest "${PROJECT_BINARY_DIR}/${ex_file}")
+  foreach (ex_file ${h4examples_files})
+    set (testsrc "${PROJECT_SOURCE_DIR}/testfiles/${ex_file}")
+    set (testdest "${PROJECT_BINARY_DIR}/${ex_file}")
     ADD_CUSTOM_COMMAND (
         OUTPUT     "${testdest}"
         COMMAND    ${CMAKE_COMMAND}
@@ -119,16 +103,18 @@ IF (BUILD_TESTING)
         DEPENDS    "${testsrc}"
     )
     list(APPEND HDF4Examples_HDF_VD_TEST_FILES "${testdest}")
-  ENDFOREACH (ex_file ${h4examples_files})
+  endforeach ()
 
   add_custom_target(HDF4Examples_HDF_VD-files ALL COMMENT "Copying files needed by VD tests"
                     DEPENDS ${HDF4Examples_HDF_VD_TEST_FILES})
 
-  FOREACH (example ${h4examples})
-    ADD_H4_TEST (${example} 1 dumpvg)
-  ENDFOREACH (example ${h4examples})
+  foreach (example ${h4examples})
+    get_filename_component (example_name ${example} NAME_WE)
+    ADD_H4_TEST (${example_name} 1 dumpvg)
+  endforeach ()
 
-  FOREACH (example ${h4examples_use})
-    ADD_H4_TEST (${example} 0 dumpvg)
-  ENDFOREACH (example ${h4examples_use})
-ENDIF (BUILD_TESTING)
+  foreach (example ${h4examples_use})
+    get_filename_component (example_name ${example} NAME_WE)
+    ADD_H4_TEST (${example_name} 0 dumpvg)
+  endforeach ()
+endif ()

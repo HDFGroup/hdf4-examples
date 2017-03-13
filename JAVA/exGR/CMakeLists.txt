@@ -9,9 +9,10 @@ INCLUDE_DIRECTORIES (
     ${JAVA_INCLUDE_PATH2}
 )
 
-set (HDF_JAVA_EXAMPLES
-    h4jex_GR_create_and_write_image
-)
+#-----------------------------------------------------------------------------
+# Define Sources, one file per application
+#-----------------------------------------------------------------------------
+include (Java_sourcefiles.cmake)
 
 if (WIN32 AND NOT CYGWIN)
   set (CMAKE_JAVA_INCLUDE_FLAG_SEP ";")
@@ -30,18 +31,19 @@ foreach (HCP_JAR ${CMAKE_JAVA_INCLUDE_PATH})
 endforeach ()
 
 foreach (example ${HDF_JAVA_EXAMPLES})
+  get_filename_component(example_name ${example} NAME_WE)
   file (WRITE ${PROJECT_BINARY_DIR}/Manifest.txt
-  "Main-Class: exAN.${example}
+  "Main-Class: exAN.${example_name}
 Class-Path: ${HDFJAVA_CLASSJARS}
 "
   )
-  ADD_JAR (${example} SOURCES ${example}.java MANIFEST ${PROJECT_BINARY_DIR}/Manifest.txt)
-  get_target_property (${example}_JAR_FILE ${example} JAR_FILE)
+  ADD_JAR (${example_name} SOURCES ${example} MANIFEST ${PROJECT_BINARY_DIR}/Manifest.txt)
+  get_target_property (${example_name}_JAR_FILE ${example_name} JAR_FILE)
 endforeach ()
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
   set (CMD_ARGS "-Dhdf.hdflib.HDFLibrary.loadLibraryName=hdf_java_debug;")
-endif(CMAKE_BUILD_TYPE MATCHES Debug)
+endif()
 
 if (BUILD_TESTING)
   macro (ADD_H4_TEST resultfile resultcode)
@@ -67,27 +69,28 @@ if (BUILD_TESTING)
   endmacro ()
 
   foreach (example ${HDF_JAVA_EXAMPLES})
+    get_filename_component(example_name ${example} NAME_WE)
     add_test (
-        NAME jnative-h4-${example}-clearall-objects
+        NAME jnative-h4-${example_name}-clearall-objects
         COMMAND    ${CMAKE_COMMAND}
             -E remove
-            ${HDF4Examples_JAVA_GR_DIR}/${example}.hdf
-            ${example}.out
-            ${example}.out.err
+            ${HDF4Examples_JAVA_GR_DIR}/${example_name}.hdf
+            ${example_name}.out
+            ${example_name}.out.err
     )
     if (NOT "${last_test}" STREQUAL "")
-      set_tests_properties (jnative-h4-${example}-clearall-objects PROPERTIES DEPENDS ${last_test})
+      set_tests_properties (jnative-h4-${example_name}-clearall-objects PROPERTIES DEPENDS ${last_test})
     endif ()
     add_test (
-        NAME jnative-h4-${example}-copy-objects
+        NAME jnative-h4-${example_name}-copy-objects
         COMMAND    ${CMAKE_COMMAND}
             -E copy_if_different
-            ${HDF4Examples_JAVA_GR_SOURCE_DIR}/testfiles/${example}.txt
-            ${HDF4Examples_JAVA_GR_BINARY_DIR}/${example}.txt
+            ${HDF4Examples_JAVA_GR_SOURCE_DIR}/testfiles/${example_name}.txt
+            ${HDF4Examples_JAVA_GR_BINARY_DIR}/${example_name}.txt
     )
-    set_tests_properties (jnative-h4-${example}-copy-objects PROPERTIES DEPENDS jnative-h4-${example}-clearall-objects)
-    set (last_test "jnative-h4-${example}-copy-objects")
-    ADD_H4_TEST (${example} 0)
+    set_tests_properties (jnative-h4-${example_name}-copy-objects PROPERTIES DEPENDS jnative-h4-${example_name}-clearall-objects)
+    set (last_test "jnative-h4-${example_name}-copy-objects")
+    ADD_H4_TEST (${example_name} 0)
   endforeach ()
 
 endif ()

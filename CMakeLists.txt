@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.2.2)
-PROJECT (HDF4Examples C CXX)
+project (HDF4Examples C CXX)
 
 #-----------------------------------------------------------------------------
 # Instructions for use : Normal Build
@@ -283,8 +283,10 @@ endif ()
 #-----------------------------------------------------------------------------
 # Build examples
 #-----------------------------------------------------------------------------
-add_subdirectory (${PROJECT_SOURCE_DIR}/hdf/examples     ${PROJECT_BINARY_DIR}/hdf/examples)
-add_subdirectory (${PROJECT_SOURCE_DIR}/mfhdf/examples   ${PROJECT_BINARY_DIR}/mfhdf/examples)
+if (HDF_BUILD_C)
+  add_subdirectory (${PROJECT_SOURCE_DIR}/hdf/examples     ${PROJECT_BINARY_DIR}/hdf/examples)
+  add_subdirectory (${PROJECT_SOURCE_DIR}/mfhdf/examples   ${PROJECT_BINARY_DIR}/mfhdf/examples)
+endif ()
 
 #-----------------------------------------------------------------------------
 # Option to build Fortran examples
@@ -296,7 +298,7 @@ set (H4_F77_FUNC "H4_F77_FUNC(name,NAME) name ## _")
 set (H4_F77_FUNC_ "H4_F77_FUNC_(name,NAME) name ## __")
 if (EXISTS "${PROJECT_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${PROJECT_SOURCE_DIR}/mfhdf/fortran")
   option (HDF_BUILD_FORTRAN "Build FORTRAN support" OFF)
-  if (HDF_BUILD_FORTRAN)
+  if (HDF_BUILD_FORTRAN AND HDF4_BUILD_FORTRAN)
     if (WIN32 AND NOT CYGWIN)
       set (H4_F77_FUNC "H4_F77_FUNC(name,NAME) NAME")
       set (H4_F77_FUNC_ "H4_F77_FUNC_(name,NAME) NAME")

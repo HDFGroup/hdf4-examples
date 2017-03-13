@@ -1,10 +1,10 @@
 cmake_minimum_required (VERSION 3.2.2)
-PROJECT (HDF4Examples_HDF C CXX)
+project (HDF4Examples_HDF C CXX)
 
 #-----------------------------------------------------------------------------
 # Define Sources
 #-----------------------------------------------------------------------------
-ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/AN   ${PROJECT_BINARY_DIR}/AN)
-ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/GR   ${PROJECT_BINARY_DIR}/GR)
-ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/VD   ${PROJECT_BINARY_DIR}/VD)
-ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/VG   ${PROJECT_BINARY_DIR}/VG)
+add_subdirectory (${PROJECT_SOURCE_DIR}/AN   ${PROJECT_BINARY_DIR}/AN)
+add_subdirectory (${PROJECT_SOURCE_DIR}/GR   ${PROJECT_BINARY_DIR}/GR)
+add_subdirectory (${PROJECT_SOURCE_DIR}/VD   ${PROJECT_BINARY_DIR}/VD)
+add_subdirectory (${PROJECT_SOURCE_DIR}/VG   ${PROJECT_BINARY_DIR}/VG)
