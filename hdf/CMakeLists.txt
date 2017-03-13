@@ -1,10 +1,10 @@
 cmake_minimum_required (VERSION 3.2.2)
-PROJECT (HDF4Examples_HDF)
+project (HDF4Examples_HDF)
 
 #-----------------------------------------------------------------------------
 # Build the hdf examples
 #-----------------------------------------------------------------------------
-ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/examples   ${PROJECT_BINARY_DIR}/examples)
-IF (HDF_BUILD_FORTRAN)
-  ADD_SUBDIRECTORY (${PROJECT_SOURCE_DIR}/fortran      ${PROJECT_BINARY_DIR}/fortran)
-ENDIF (HDF_BUILD_FORTRAN)
+add_subdirectory (${PROJECT_SOURCE_DIR}/examples   ${PROJECT_BINARY_DIR}/examples)
+if (HDF_BUILD_FORTRAN)
+  add_subdirectory (${PROJECT_SOURCE_DIR}/fortran      ${PROJECT_BINARY_DIR}/fortran)
+endif ()
