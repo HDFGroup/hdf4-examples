@@ -344,7 +344,7 @@ if (PACK_EXAMPLE_SOURCE)
   endif()
   set (CPACK_TOPLEVEL_TAG "HDF4Examples-${CPACK_PACKAGE_VERSION}-Source")
   set (CPACK_SOURCE_TOPLEVEL_TAG "HDF4Examples-${CPACK_PACKAGE_VERSION}-Source")
-  set (CPACK_SOURCE_PACKAGE_FILE_NAME "HDF4Examples")
+  set (CPACK_SOURCE_PACKAGE_FILE_NAME "HDF4Examples-Source")
   INCLUDE(CPack)
   # Installation types
   cpack_add_install_type(Full DISPLAY_NAME "Everything")
