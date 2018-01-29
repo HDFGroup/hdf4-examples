@@ -41,6 +41,8 @@ endif ()
 include (${HDF4EX_RESOURCES_DIR}/HDFMacros.cmake)
 include (${HDF4EX_RESOURCES_DIR}/HDF4Macros.cmake)
 
+SET_HDF_BUILD_TYPE()
+
 #-----------------------------------------------------------------------------
 # Setup output Directories
 #-----------------------------------------------------------------------------

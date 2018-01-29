@@ -30,7 +30,6 @@ endif ()
 foreach (example ${examples})
   get_filename_component (example_name ${example} NAME_WE)
   add_executable (mf_${example_name} ${PROJECT_SOURCE_DIR}/${example})
-  TARGET_NAMING (mf_${example_name} ${LIB_TYPE})
   target_link_libraries (mf_${example_name} ${LINK_LIBS})
   if (BUILD_TESTING)
     add_test (
