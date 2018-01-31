@@ -231,9 +231,9 @@ if (HDF_DISABLE_COMPILER_WARNINGS)
   if (MSVC)
     set (HDF_WARNINGS_BLOCKED 1)
     string (REGEX REPLACE "(^| )([/-])W[0-9]( |$)" " " CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /w")
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W0")
     string (REGEX REPLACE "(^| )([/-])W[0-9]( |$)" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W0")
   endif ()
   if (WIN32)
     add_definitions (-D_CRT_SECURE_NO_WARNINGS)
@@ -286,8 +286,8 @@ endif ()
 # Build examples
 #-----------------------------------------------------------------------------
 if (HDF_BUILD_C)
-  add_subdirectory (${PROJECT_SOURCE_DIR}/hdf/examples     ${PROJECT_BINARY_DIR}/hdf/examples)
-  add_subdirectory (${PROJECT_SOURCE_DIR}/mfhdf/examples   ${PROJECT_BINARY_DIR}/mfhdf/examples)
+  add_subdirectory (hdf/examples)
+  add_subdirectory (mfhdf/examples)
 endif ()
 
 #-----------------------------------------------------------------------------
@@ -306,8 +306,8 @@ if (EXISTS "${PROJECT_SOURCE_DIR}/mfhdf/fortran" AND IS_DIRECTORY "${PROJECT_SOU
       set (H4_F77_FUNC_ "H4_F77_FUNC_(name,NAME) NAME")
     endif ()
     include (${HDF4EX_RESOURCES_DIR}/HDF4UseFortran.cmake)
-    add_subdirectory (${PROJECT_SOURCE_DIR}/mfhdf/fortran ${PROJECT_BINARY_DIR}/mfhdf/fortran)
-    add_subdirectory (${PROJECT_SOURCE_DIR}/hdf/fortran ${PROJECT_BINARY_DIR}/hdf/fortran)
+    add_subdirectory (mfhdf/fortran)
+    add_subdirectory (hdf/fortran)
   endif ()
 endif ()
 
@@ -318,7 +318,7 @@ if (EXISTS "${PROJECT_SOURCE_DIR}/JAVA" AND IS_DIRECTORY "${PROJECT_SOURCE_DIR}/
   option (HDF_BUILD_JAVA "Build JAVA support" OFF)
   if (HDF_BUILD_JAVA AND HDF4_BUILD_JAVA)
     include (${HDF4EX_RESOURCES_DIR}/UseJava.cmake)
-    add_subdirectory (${PROJECT_SOURCE_DIR}/JAVA ${PROJECT_BINARY_DIR}/JAVA)
+    add_subdirectory (JAVA)
   endif ()
 endif ()
 
