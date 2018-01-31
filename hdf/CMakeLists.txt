@@ -4,7 +4,7 @@ project (HDF4Examples_HDF)
 #-----------------------------------------------------------------------------
 # Build the hdf examples
 #-----------------------------------------------------------------------------
-add_subdirectory (${PROJECT_SOURCE_DIR}/examples   ${PROJECT_BINARY_DIR}/examples)
+add_subdirectory (examples)
 if (HDF_BUILD_FORTRAN)
-  add_subdirectory (${PROJECT_SOURCE_DIR}/fortran      ${PROJECT_BINARY_DIR}/fortran)
+  add_subdirectory (fortran)
 endif ()
