@@ -8,9 +8,20 @@ Notes: This short instruction is written for users who want to quickly build
        More information about using CMake can be found at the KitWare
        site, www.cmake.org.
 
-       CMake uses the command line and these instructions use the script
-       method of the ctest command. Optional instructions for using the command
-       line are in section IV.
+       CMake uses the command line; however, the visual CMake tool is
+       available for the configuration step. The steps are similar for
+       all of the operating systems supported by CMake.
+
+       NOTES:
+         1. Using CMake for building and using HDF4 is under active
+            development. While we have attempted to provide error-free
+            files, please understand that development with CMake has not
+            been extensively tested outside of HDF. The CMake specific
+            files may change before the next release.
+
+         2. CMake for HDF4 development should be usable on any system
+            where CMake is supported. Please send us any comments on how
+            CMake support can be improved on any system.
 
 
 ========================================================================
@@ -22,7 +33,7 @@ I. Preconditions
       of 3.2.2.
 
    2. You have installed the HDF4 library built with CMake, by executing
-      the HDF Install Utility (the *.exe file in the binary package for
+      the HDF Install Utility (the *.msi file in the binary package for
       Windows or the *.sh on Linux). If you are using a Windows platform,
       you can obtain a pre-built Windows binary from The HDF Group's website
       at www.hdfgroup.org.
@@ -41,61 +52,6 @@ I. Preconditions
 
 ========================================================================
 II. Building HDF4 Examples with CMake
-========================================================================
-
-Files in the HDF4Examples/config/cmake directory:
-       HDF4_Examples.cmake
-
-Default installation process:
-       Create a directory to run the examples, i.e. /test_hdf4.
-       Copy/Uncompress HDF4Examples source to /test_hdf4/hdf4_examples.
-       Copy /test_hdf4/hdf4_examples/config/cmake/HDF4_Examples.cmake to /test_hdf4.
-       Edit line 11 of the HDF4_Examples.cmake file and change the INSTALLDIR
-           to the HDF4 install location.
-       Edit line 12 of the HDF4_Examples.cmake file and change the CTEST_CMAKE_GENERATOR
-           to your build generator:
-            * Borland Makefiles
-            * MSYS Makefiles
-            * MinGW Makefiles
-            * NMake Makefiles
-            * Unix Makefiles
-            * Visual Studio 11 2012
-            * Visual Studio 11 2012 Win64
-            * Visual Studio 12 2013
-            * Visual Studio 12 2013 Win64
-            * Visual Studio 14 2015
-            * Visual Studio 14 2015 Win64
-
-       Edit line 13 of the HDF4_Examples.cmake file and change the STATICLIBRARIES
-           to TRUE if to use static libraries, otherwise FALSE to use shared.
-
-       Edit line 15 of the HDF4_Examples.cmake file and change the FORTRANLIBRARIES
-           to TRUE if to use fortran libraries.
-
-       Edit line 16 of the HDF4_Examples.cmake file and change the JAVALIBRARIES
-           to TRUE if to use java libraries.
-
-       Execute from this directory:
-          ctest -S HDF4_Examples.cmake,hdf4_examples -C Release -O test.log
-
-The script will create a build directory inside the hdf4_examples directory.
-   It will then configure, build, and execute the examples. All the log files
-   will be found under the build/Testing/Temporary directory, check these for
-   errors.
-
-The amount of script information can be increased by adding -V to the ctest
-   command. Even more information can be shown by adding -VV instead of -V.
-
-
-========================================================================
-III. Common changes to the HDF4_Examples.cmake file
-========================================================================
-
-Line 17: uncomment to allow Mac machines to build shared examples.
-
-
-========================================================================
-IV. Building HDF4 Examples with CMake command line tools
 ========================================================================
 
 Go through these steps to build HDF4 applications with CMake.
@@ -206,7 +162,7 @@ These steps are described in more detail below.
 
 
 ========================================================================
-V. Using HDF4 Libraries with Visual Studio 2008
+III. Using HDF4 Libraries with Visual Studio 2008
 ========================================================================
 
    1. Set up path for external libraries and headers
