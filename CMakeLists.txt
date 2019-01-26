@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.2.2)
+cmake_minimum_required (VERSION 3.10)
 project (HDF4Examples C CXX)
 
 #-----------------------------------------------------------------------------
@@ -41,29 +41,7 @@ endif ()
 include (${HDF4EX_RESOURCES_DIR}/HDFMacros.cmake)
 include (${HDF4EX_RESOURCES_DIR}/HDF4Macros.cmake)
 
-SET_HDF_BUILD_TYPE()
-
-#-----------------------------------------------------------------------------
-# Setup output Directories
-#-----------------------------------------------------------------------------
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY
-    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all Executables."
-)
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY
-    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all Libraries"
-)
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all static libraries."
-)
-set (CMAKE_Fortran_MODULE_DIRECTORY
-    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all fortran modules."
-)
-set (CMAKE_JAVA_TARGET_OUTPUT_DIR
-    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all java jars."
-)
-set (CMAKE_PDB_OUTPUT_DIRECTORY
-    ${PROJECT_BINARY_DIR}/bin CACHE PATH "Single Directory for all pdb files."
-)
+HDF_DIR_PATHS("HDF4EX")
 
 #-----------------------------------------------------------------------------
 # When building utility executables that generate other (source) files :
@@ -165,7 +143,7 @@ if (NOT HDF4_HDF4_HEADER)
       endif ()
       if (HDF_BUILD_JAVA)
         set (CMAKE_JAVA_INCLUDE_PATH "${CMAKE_JAVA_INCLUDE_PATH};${HDF4_JAVA_INCLUDE_DIRS}")
-        message (STATUS "HDF4 jars:${HDF4_JAVA_INCLUDE_DIRS}}")
+        message (STATUS "HDF4 jars:${HDF4_JAVA_INCLUDE_DIRS}")
       endif ()
     else ()
       if (BUILD_SHARED_LIBS AND HDF4_shared_C_FOUND)
@@ -231,9 +209,9 @@ if (HDF_DISABLE_COMPILER_WARNINGS)
   if (MSVC)
     set (HDF_WARNINGS_BLOCKED 1)
     string (REGEX REPLACE "(^| )([/-])W[0-9]( |$)" " " CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W0")
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /w")
     string (REGEX REPLACE "(^| )([/-])W[0-9]( |$)" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W0")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w")
   endif ()
   if (WIN32)
     add_definitions (-D_CRT_SECURE_NO_WARNINGS)

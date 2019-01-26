@@ -16,11 +16,11 @@ int main( )
    uint16 name_len;
 
    /********************** End of variable declaration **********************/
- 
+
    /*
    * Open the HDF file for reading.
    */
-   file_id = Hopen (FILE_NAME, DFACC_READ, 0); 
+   file_id = Hopen (FILE_NAME, DFACC_READ, 0);
 
    /*
    * Initialize the V interface.
@@ -35,7 +35,7 @@ int main( )
    num_of_lones = Vlone (file_id, NULL, num_of_lones );
 
    /*
-   * Then, if there are any lone vgroups, 
+   * Then, if there are any lone vgroups,
    */
    if (num_of_lones > 0)
    {
@@ -46,7 +46,7 @@ int main( )
       ref_array = (int32 *) malloc(sizeof(int32) * num_of_lones);
 
       /*
-      * and call Vlone again to retrieve the reference numbers into 
+      * and call Vlone again to retrieve the reference numbers into
       * the buffer ref_array.
       */
       num_of_lones = Vlone (file_id, ref_array, num_of_lones);
@@ -54,8 +54,8 @@ int main( )
       /*
       * Display the name and class of each lone vgroup.
       */
-      fprintf(stderr, "Lone vgroups in this file are:\n");
-      for (lone_vg_number = 0; lone_vg_number < num_of_lones; 
+      printf("Lone vgroups in this file are:\n");
+      for (lone_vg_number = 0; lone_vg_number < num_of_lones;
                                                             lone_vg_number++)
       {
          /*
@@ -64,28 +64,28 @@ int main( )
          * moving to the next.
          */
          vgroup_id = Vattach (file_id, ref_array[lone_vg_number], "r");
-	 status_32 = Vgetnamelen(vgroup_id, &name_len);
-	 vgroup_name = (char *) HDmalloc(sizeof(char *) * (name_len+1));
-	 if (vgroup_name == NULL)
-	 {
-	     fprintf(stderr, "Not enough memory for vgroup_name!\n");
-	     exit(1);
-	 }
+    status_32 = Vgetnamelen(vgroup_id, &name_len);
+    vgroup_name = (char *) HDmalloc(sizeof(char *) * (name_len+1));
+    if (vgroup_name == NULL)
+    {
+        fprintf(stderr, "Not enough memory for vgroup_name!\n");
+        exit(1);
+    }
          status_32 = Vgetname (vgroup_id, vgroup_name);
 
-	 status_32 = Vgetclassnamelen(vgroup_id, &name_len);
-	 vgroup_class = (char *) HDmalloc(sizeof(char *) * (name_len+1));
-	 if (vgroup_class == NULL)
-	 {
-	     fprintf(stderr, "Not enough memory for vgroup_class!\n");
-	     exit(1);
-	 }
+    status_32 = Vgetclassnamelen(vgroup_id, &name_len);
+    vgroup_class = (char *) HDmalloc(sizeof(char *) * (name_len+1));
+    if (vgroup_class == NULL)
+    {
+        fprintf(stderr, "Not enough memory for vgroup_class!\n");
+        exit(1);
+    }
          status_32 = Vgetclass (vgroup_id, vgroup_class);
-         fprintf(stderr, "   Vgroup name %s and class %s\n", vgroup_name,  
-                     vgroup_class); 
+         printf("   Vgroup name %s and class %s\n", vgroup_name,
+                     vgroup_class);
          status_32 = Vdetach (vgroup_id);
-	 if (vgroup_name != NULL) HDfree(vgroup_name);
-	 if (vgroup_class != NULL) HDfree(vgroup_class);
+    if (vgroup_name != NULL) HDfree(vgroup_name);
+    if (vgroup_class != NULL) HDfree(vgroup_class);
       } /* for */
    } /* if */
 
