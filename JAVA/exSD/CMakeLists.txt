@@ -14,7 +14,7 @@ INCLUDE_DIRECTORIES (
 #-----------------------------------------------------------------------------
 include (Java_sourcefiles.cmake)
 
-if (WIN32 AND NOT CYGWIN)
+if (WIN32)
   set (CMAKE_JAVA_INCLUDE_FLAG_SEP ";")
 else ()
   set (CMAKE_JAVA_INCLUDE_FLAG_SEP ":")
@@ -31,19 +31,15 @@ foreach (HCP_JAR ${CMAKE_JAVA_INCLUDE_PATH})
 endforeach ()
 
 foreach (example ${HDF_JAVA_EXAMPLES})
-  get_filename_component(example_name ${example} NAME_WE)
+  get_filename_component (example_name ${example} NAME_WE)
   file (WRITE ${PROJECT_BINARY_DIR}/Manifest.txt
   "Main-Class: exSD.${example_name}
 Class-Path: ${HDFJAVA_CLASSJARS}
 "
   )
-  ADD_JAR (${example_name} SOURCES ${example} MANIFEST ${PROJECT_BINARY_DIR}/Manifest.txt)
+  add_jar (${example_name} SOURCES ${example} MANIFEST ${PROJECT_BINARY_DIR}/Manifest.txt)
   get_target_property (${example_name}_JAR_FILE ${example_name} JAR_FILE)
 endforeach ()
-
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-  set (CMD_ARGS "-Dhdf.hdflib.HDFLibrary.loadLibraryName=hdf_java_debug;")
-endif()
 
 if (BUILD_TESTING)
   macro (ADD_H4_TEST resultfile resultcode)
@@ -52,7 +48,7 @@ if (BUILD_TESTING)
         COMMAND "${CMAKE_COMMAND}"
             -D "TEST_TESTER=${CMAKE_Java_RUNTIME}"
             -D "TEST_PROGRAM=exSD.${resultfile}"
-            -D "TEST_ARGS:STRING=${CMD_ARGS}${ARGN}"
+            -D "TEST_ARGS:STRING=${ARGN}"
             -D "TEST_CLASSPATH:STRING=${CMAKE_JAVA_CLASSPATH}${CMAKE_JAVA_INCLUDE_FLAG_SEP}${${resultfile}_JAR_FILE}"
             -D "TEST_LIBRARY_DIRECTORY=${HDF4_JAVA_LIBRARIES}"
             -D "TEST_FOLDER=${HDF4Examples_JAVA_SD_BINARY_DIR}"
