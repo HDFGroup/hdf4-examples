@@ -43,7 +43,7 @@ if (BUILD_TESTING)
       add_test (
           NAME ${testname}-HDP
           COMMAND "${CMAKE_COMMAND}"
-              -D "TEST_PROGRAM=$<TARGET_FILE:hdf4::hdp>"
+              -D "TEST_PROGRAM=${HDF4_DUMP_EXECUTABLE}"
               -D "TEST_ARGS:STRING=${ARGN};${testname}.hdf"
               -D "TEST_FOLDER=${PROJECT_BINARY_DIR}"
               -D "TEST_OUTPUT=${testname}.ddl.out"
