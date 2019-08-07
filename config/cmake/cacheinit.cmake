@@ -14,7 +14,7 @@ set (HDF_BUILD_JAVA ON CACHE BOOL "Build Java support" FORCE)
 
 set (BUILD_TESTING ON CACHE BOOL "Build HDF5 Unit Testing" FORCE)
 
-set (COMPARE_TESTING ON CACHE BOOL "Compare HDF5 Unit Testing to Reference" FORCE)
+set (COMPARE_TESTING ON CACHE BOOL "Compare HDF4 Unit Testing to Reference" FORCE)
 
 set (HDF4_PACKAGE_NAME "hdf4" CACHE STRING "Name of HDF4 package" FORCE)
 
