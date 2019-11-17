@@ -14,7 +14,7 @@ INCLUDE_DIRECTORIES (
 #-----------------------------------------------------------------------------
 include (Java_sourcefiles.cmake)
 
-if (WIN32)
+if (WIN32 OR MINGW)
   set (CMAKE_JAVA_INCLUDE_FLAG_SEP ";")
 else ()
   set (CMAKE_JAVA_INCLUDE_FLAG_SEP ":")
