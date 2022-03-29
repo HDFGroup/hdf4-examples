@@ -5,9 +5,9 @@
 ##   ENABLE_TESTING()
 ##   INCLUDE(CTest)
 set (CTEST_NIGHTLY_START_TIME "18:00:00 CST")
+set (CTEST_PROJECT_NAME "HDF4Examples")
 
 set (CTEST_DROP_METHOD "https")
-set (CTEST_PROJECT_NAME "HDF4Examples")
 if (CDASH_LOCAL)
   set (CTEST_DROP_SITE "cdash-internal.hdfgroup.org")
   set (CTEST_DROP_LOCATION "/submit.php?project=HDF4Examples")
@@ -22,3 +22,6 @@ set (VALGRIND_COMMAND "/usr/bin/valgrind")
 set (VALGRIND_COMMAND_OPTIONS "-v --tool=memcheck --leak-check=full --track-fds=yes --num-callers=50 --show-reachable=yes --track-origins=yes --malloc-fill=0xff --free-fill=0xfe")
 set (CTEST_MEMORYCHECK_COMMAND "/usr/bin/valgrind")
 set (CTEST_MEMORYCHECK_COMMAND_OPTIONS "-v --tool=memcheck --leak-check=full --track-fds=yes --num-callers=50 --show-reachable=yes --track-origins=yes --malloc-fill=0xff --free-fill=0xfe")
+
+set (CTEST_TESTING_TIMEOUT 1200)
+set (DART_TESTING_TIMEOUT 1200)
