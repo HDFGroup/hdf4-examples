@@ -14,7 +14,7 @@ set (PACK_EXAMPLE_SOURCE ON CACHE BOOL "Package the source" FORCE)
 
 set (HDF_BUILD_C ON CACHE BOOL "Build C support" FORCE)
 
-set (HDF_BUILD_FORTRAN ON CACHE BOOL "Build FORTRAN support" FORCE)
+set (HDF_BUILD_FORTRAN OFF CACHE BOOL "Build FORTRAN support" FORCE)
 
 set (HDF_BUILD_JAVA ON CACHE BOOL "Build Java support" FORCE)
 
