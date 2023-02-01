@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.2.2)
+cmake_minimum_required (VERSION 3.12)
 project (HDF4Examples_JAVA_GR Java)
 
 set (CMAKE_VERBOSE_MAKEFILE 1)
@@ -14,7 +14,7 @@ INCLUDE_DIRECTORIES (
 #-----------------------------------------------------------------------------
 include (Java_sourcefiles.cmake)
 
-if (WIN32 OR MINGW)
+if (WIN32)
   set (CMAKE_JAVA_INCLUDE_FLAG_SEP ";")
 else ()
   set (CMAKE_JAVA_INCLUDE_FLAG_SEP ":")
@@ -65,7 +65,7 @@ if (BUILD_TESTING)
   endmacro ()
 
   foreach (example ${HDF_JAVA_EXAMPLES})
-    get_filename_component(example_name ${example} NAME_WE)
+    get_filename_component (example_name ${example} NAME_WE)
     add_test (
         NAME jnative-h4-${example_name}-clearall-objects
         COMMAND    ${CMAKE_COMMAND}
