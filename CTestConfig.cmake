@@ -5,11 +5,8 @@
 ##   ENABLE_TESTING()
 ##   INCLUDE(CTest)
 set (CTEST_NIGHTLY_START_TIME "18:00:00 CST")
-<<<<<<< HEAD
-=======
 
 set (CTEST_DROP_METHOD "https")
->>>>>>> branch 'master' of https://github.com/HDFGroup/hdf4-examples.git
 set (CTEST_PROJECT_NAME "HDF4Examples")
 
 set (CTEST_DROP_METHOD "https")
