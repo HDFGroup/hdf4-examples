@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.12)
-project (HDF4Examples_HDF_FORTRAN C CXX Fortran)
+project (HDF4Examples_HDF_FORTRAN Fortran)
 # --------------------------------------------------------------------
 # Notes: When creating examples they should be prefixed
 # with "f_ex_". This allows for easier filtering of the examples.
@@ -23,7 +23,8 @@ endif ()
 # Setup include Directories
 #-----------------------------------------------------------------------------
 INCLUDE_DIRECTORIES (
-    ${CMAKE_Fortran_MODULE_DIRECTORY}
+    ${CMAKE_Fortran_MODULE_DIRECTORY}${HDF_MOD_EXT}
+    ${PROJECT_BINARY_DIR}
     ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
@@ -32,59 +33,57 @@ INCLUDE_DIRECTORIES (
 #-----------------------------------------------------------------------------
 include (Fortran_sourcefiles.cmake)
 
-if (BUILD_TESTING)
-  # Remove any output file left over from previous test run
-  add_test (
-      NAME HDF_FORTRAN_EXAMPLES-clearall-objects
-      COMMAND    ${CMAKE_COMMAND}
-          -E remove
-          General_HDFobjects.hdf
-          General_RImages.hdf
-          General_Vdatas.hdf
-          General_Vgroups.hdf
-          Image_with_Palette.hdf
-          Packed_Vdata.hdf
-          Two_Vdatas.hdf
-          Two_Vgroups.hdf
-  )
-  if (NOT "${last_test}" STREQUAL "")
-    set_tests_properties (HDF_FORTRAN_EXAMPLES-clearall-objects PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
-  else ()
-    set_tests_properties (HDF_FORTRAN_EXAMPLES-clearall-objects PROPERTIES LABELS EXAMPLES)
-  endif ()
-  set (last_test "HDF_FORTRAN_EXAMPLES-clearall-objects")
+# Remove any output file left over from previous test run
+add_test (
+    NAME HDF_FORTRAN_EXAMPLES-clearall-objects
+    COMMAND    ${CMAKE_COMMAND}
+        -E remove
+        General_HDFobjects.hdf
+        General_RImages.hdf
+        General_Vdatas.hdf
+        General_Vgroups.hdf
+        Image_with_Palette.hdf
+        Packed_Vdata.hdf
+        Two_Vdatas.hdf
+        Two_Vgroups.hdf
+)
+if (NOT "${last_test}" STREQUAL "")
+  set_tests_properties (HDF_FORTRAN_EXAMPLES-clearall-objects PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
+else ()
+  set_tests_properties (HDF_FORTRAN_EXAMPLES-clearall-objects PROPERTIES LABELS EXAMPLES)
 endif ()
+set (last_test "HDF_FORTRAN_EXAMPLES-clearall-objects")
 
 foreach (example ${examples})
   get_filename_component(example_name ${example} NAME_WE)
-  add_executable (f_ex_${example_name} ${PROJECT_SOURCE_DIR}/${example})
-  set_target_properties (f_ex_${example_name} PROPERTIES LINKER_LANGUAGE Fortran)
-  target_link_libraries (f_ex_${example_name} ${LINK_LIBS})
-  if (BUILD_TESTING)
+  add_executable (${EXAMPLE_VARNAME}_f_ex_${example_name} ${PROJECT_SOURCE_DIR}/${example})
+  set_target_properties (${EXAMPLE_VARNAME}_f_ex_${example_name} PROPERTIES LINKER_LANGUAGE Fortran)
+  target_link_libraries (${EXAMPLE_VARNAME}_f_ex_${example_name} ${H4EX_HDF4_LINK_LIBS})
+  if (H4EX_BUILD_TESTING)
     add_test (
-        NAME f_extest_${example_name}
+        NAME ${EXAMPLE_VARNAME}_f_extest_${example_name}
         COMMAND "${CMAKE_COMMAND}"
-            -D "TEST_PROGRAM=$<TARGET_FILE:f_ex_${example_name}>"
+            -D "TEST_PROGRAM=$<TARGET_FILE:${EXAMPLE_VARNAME}_f_ex_${example_name}>"
             -D "TEST_ARGS:STRING="
             -D "TEST_FOLDER=${PROJECT_BINARY_DIR}"
             -D "TEST_EXPECT=0"
             -D "TEST_SKIP_COMPARE=TRUE"
             -D "TEST_OUTPUT=${testname}.out"
             -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
-            -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
+            -P "${${EXAMPLE_PACKAGE_NAME}_RESOURCES_DIR}/runTest.cmake"
     )
     if (NOT "${last_test}" STREQUAL "")
-      set_tests_properties (f_extest_${example_name} PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
+      set_tests_properties (${EXAMPLE_VARNAME}_f_extest_${example_name} PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
     else ()
-      set_tests_properties (f_extest_${example_name} PROPERTIES LABELS EXAMPLES)
+      set_tests_properties (${EXAMPLE_VARNAME}_f_extest_${example_name} PROPERTIES LABELS EXAMPLES)
     endif ()
-    set (last_test "f_extest_${example_name}")
+    set (last_test "${EXAMPLE_VARNAME}_f_extest_${example_name}")
   endif ()
 endforeach ()
 
 add_executable (f_ex_h4ex_VG_add_sds_to_vgroup ${PROJECT_SOURCE_DIR}/h4ex_VG_add_sds_to_vgroup.f)
 set_target_properties (f_ex_h4ex_VG_add_sds_to_vgroup PROPERTIES LINKER_LANGUAGE Fortran)
-target_link_libraries (f_ex_h4ex_VG_add_sds_to_vgroup ${LINK_LIBS})
+target_link_libraries (f_ex_h4ex_VG_add_sds_to_vgroup ${H4EX_HDF4_LINK_LIBS})
 
 if (BUILD_TESTING)
   add_test (
@@ -97,7 +96,7 @@ if (BUILD_TESTING)
             -D "TEST_SKIP_COMPARE=TRUE"
             -D "TEST_OUTPUT=${testname}.out"
             -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
-            -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
+            -P "${${EXAMPLE_PACKAGE_NAME}_RESOURCES_DIR}/runTest.cmake"
   )
   if (NOT "${last_test}" STREQUAL "")
     set_tests_properties (f_extest_h4ex_VG_add_sds_to_vgroup PROPERTIES DEPENDS ${last_test} LABELS EXAMPLES)
@@ -111,7 +110,7 @@ foreach (example ${skip_examples})
   get_filename_component(example_name ${example} NAME_WE)
   add_executable (f_ex_${example_name} ${PROJECT_SOURCE_DIR}/${example})
   set_target_properties (f_ex_${example_name} PROPERTIES LINKER_LANGUAGE Fortran)
-  target_link_libraries (f_ex_${example_name} ${LINK_LIBS})
+  target_link_libraries (f_ex_${example_name} ${H4EX_HDF4_LINK_LIBS})
   if (BUILD_TESTING)
     add_test (
         NAME f_extest_${example_name}

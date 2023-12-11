@@ -1,9 +1,9 @@
 cmake_minimum_required (VERSION 3.12)
+project (HDF4Examples_MFHDF_FORTRAN Fortran)
 # --------------------------------------------------------------------
 # Notes: When creating examples they should be prefixed
 # with "f_ex_". This allows for easier filtering of the examples.
 # --------------------------------------------------------------------
-project (HDF4Examples_MFHDF_FORTRAN C CXX Fortran)
 
 if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_GREATER_EQUAL 10.0)
   set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch")
@@ -13,7 +13,8 @@ endif ()
 # Setup include Directories
 #-----------------------------------------------------------------------------
 INCLUDE_DIRECTORIES (
-    ${CMAKE_Fortran_MODULE_DIRECTORY}
+    ${CMAKE_Fortran_MODULE_DIRECTORY}${HDF_MOD_EXT}
+    ${PROJECT_BINARY_DIR}
     ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
@@ -22,7 +23,7 @@ INCLUDE_DIRECTORIES (
 #-----------------------------------------------------------------------------
 include (Fortran_sourcefiles.cmake)
 
-if (BUILD_TESTING)
+if (H4EX_BUILD_TESTING)
   # Remove any output file left over from previous test run
   add_test (
       NAME MFHDF_FORTRAN_EXAMPLES-clearall-objects
@@ -46,7 +47,7 @@ foreach (example ${examples})
   get_filename_component(example_name ${example} NAME_WE)
   add_executable (f_exmf_${example_name} ${PROJECT_SOURCE_DIR}/${example})
   set_target_properties (f_exmf_${example_name} PROPERTIES LINKER_LANGUAGE Fortran)
-  target_link_libraries (f_exmf_${example_name} ${LINK_LIBS})
+  target_link_libraries (f_exmf_${example_name} ${H4EX_HDF4_LINK_LIBS})
   if (BUILD_TESTING)
     add_test (
         NAME f_exmftest_${example_name}
@@ -73,7 +74,7 @@ foreach (example ${skip_examples})
   get_filename_component(example_name ${example} NAME_WE)
   add_executable (f_exmf_${example_name} ${PROJECT_SOURCE_DIR}/${example})
   set_target_properties (f_exmf_${example_name} PROPERTIES LINKER_LANGUAGE Fortran)
-  target_link_libraries (f_exmf_${example_name} ${LINK_LIBS})
+  target_link_libraries (f_exmf_${example_name} ${H4EX_HDF4_LINK_LIBS})
   if (BUILD_TESTING)
     add_test (
         NAME f_exmftest_${example_name}

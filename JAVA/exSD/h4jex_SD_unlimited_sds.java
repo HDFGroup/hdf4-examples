@@ -10,8 +10,6 @@
  * access to the file, you may request a copy from help@hdfgroup.org.        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-package exSD;
-
 import hdf.hdflib.HDFConstants;
 import hdf.hdflib.HDFLibrary;
 
