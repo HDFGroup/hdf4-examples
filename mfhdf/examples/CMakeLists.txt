@@ -1,12 +1,12 @@
 cmake_minimum_required (VERSION 3.12)
-project (HDF4Examples_MFHDF)
+project (HDF4Examples_MFHDF C)
 
 #-----------------------------------------------------------------------------
 # Define Sources
 #-----------------------------------------------------------------------------
 include (C_sourcefiles.cmake)
 
-if (BUILD_TESTING)
+if (H4EX_BUILD_TESTING)
   # Remove any output file left over from previous test run
   add_test (
       NAME MFHDF_EXAMPLES-clearall-objects
@@ -30,8 +30,8 @@ endif ()
 foreach (example ${examples})
   get_filename_component (example_name ${example} NAME_WE)
   add_executable (mf_${example_name} ${PROJECT_SOURCE_DIR}/${example})
-  target_link_libraries (mf_${example_name} ${LINK_LIBS})
-  if (BUILD_TESTING)
+  target_link_libraries (mf_${example_name} ${H4EX_HDF4_LINK_LIBS})
+  if (H4EX_BUILD_TESTING)
     add_test (
         NAME mftest_${example_name}
         COMMAND "${CMAKE_COMMAND}"

@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.12)
-project (HDF4Examples_HDF_VD C CXX)
+project (HDF4Examples_HDF_VD C)
 
 #-----------------------------------------------------------------------------
 # Define Sources
@@ -9,25 +9,25 @@ include (C_sourcefiles.cmake)
 foreach (example ${h4examples})
   get_filename_component (example_name ${example} NAME_WE)
   add_executable (hdf_${example_name} ${PROJECT_SOURCE_DIR}/${example})
-  target_link_libraries (hdf_${example_name} ${LINK_LIBS})
+  target_link_libraries (hdf_${example_name} ${H4EX_HDF4_LINK_LIBS})
 endforeach ()
 
 foreach (example ${h4examples_use})
   get_filename_component (example_name ${example} NAME_WE)
   add_executable (hdf_${example_name} ${PROJECT_SOURCE_DIR}/${example})
-  target_link_libraries (hdf_${example_name} ${LINK_LIBS})
+  target_link_libraries (hdf_${example_name} ${H4EX_HDF4_LINK_LIBS})
 endforeach ()
 
-if (BUILD_TESTING)
+if (H4EX_BUILD_TESTING)
   macro (ADD_H4_TEST testname testcreate)
     add_test (
-        NAME ${testname}-clearall
+        NAME hdf_${testname}-clearall
         COMMAND    ${CMAKE_COMMAND}
             -E remove
             ${testname}.hdf
     )
     add_test (
-        NAME ${testname}
+        NAME hdf_${testname}
         COMMAND "${CMAKE_COMMAND}"
             -D "TEST_PROGRAM=$<TARGET_FILE:hdf_${testname}>"
             -D "TEST_ARGS:STRING="
@@ -38,12 +38,12 @@ if (BUILD_TESTING)
             -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
             -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
     )
-    set_tests_properties (${testname} PROPERTIES DEPENDS ${testname}-clearall)
+    set_tests_properties (hdf_${testname} PROPERTIES DEPENDS hdf_${testname}-clearall)
     if (HDF4_BUILD_TOOLS AND ${testcreate} STREQUAL "1")
       add_test (
-          NAME ${testname}-HDP
+          NAME hdf_HDP-${testname}
           COMMAND "${CMAKE_COMMAND}"
-              -D "TEST_PROGRAM=${HDF4_DUMP_EXECUTABLE}"
+              -D "TEST_PROGRAM=${H4EX_HDF4_DUMP_EXECUTABLE}"
               -D "TEST_ARGS:STRING=${ARGN};${testname}.hdf"
               -D "TEST_FOLDER=${PROJECT_BINARY_DIR}"
               -D "TEST_OUTPUT=${testname}.ddl.out"
@@ -52,7 +52,7 @@ if (BUILD_TESTING)
               -D "TEST_LIBRARY_DIRECTORY=${CMAKE_TEST_LIB_DIRECTORY}"
               -P "${HDF4EX_RESOURCES_DIR}/runTest.cmake"
       )
-      set_tests_properties (${testname}-HDP PROPERTIES DEPENDS ${testname})
+      set_tests_properties (hdf_HDP-${testname} PROPERTIES DEPENDS hdf_${testname})
     endif ()
   endmacro ()
 

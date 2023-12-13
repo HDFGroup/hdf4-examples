@@ -6,7 +6,7 @@
 
 set (BUILD_SHARED_LIBS OFF CACHE BOOL "Build Shared Libraries" FORCE)
 
-set (BUILD_TESTING ON CACHE BOOL "Build HDF4 Unit Testing" FORCE)
+set (H4EX_BUILD_TESTING ON CACHE BOOL "Build HDF4 Unit Testing" FORCE)
 
 set (COMPARE_TESTING ON CACHE BOOL "Compare HDF4 Unit Testing to Reference" FORCE)
 

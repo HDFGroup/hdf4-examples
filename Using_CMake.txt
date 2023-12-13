@@ -32,14 +32,14 @@ I. Preconditions
       web site. The HDF 4.2.x product requires a minimum CMake version
       of 3.12.
 
-   2. You have installed the HDF5 library built with CMake, by executing
+   2. You have installed the HDF4 library built with CMake, by executing
       the HDF Install Utility (the *.msi file in the binary package for
       Windows or the *.sh on Linux). If you are using a Windows platform,
       you can obtain a pre-built Windows binary from The HDF Group's website
       at www.hdfgroup.org.
 
-   3. Set the environment variable HDF5_DIR to the installed location of
-      the config files for HDF5. On Windows:
+   3. Set the environment variable HDF4_DIR to the installed location of
+      the config files for HDF4. On Windows:
             HDF4_ROOT=C:/Program Files/HDF_Group/HDF/4.2.x/
 
       (Note there are no quote characters used on Windows and all platforms
@@ -97,7 +97,7 @@ These steps are described in more detail below.
             * Visual Studio 19
 
         <options> is:
-            * BUILD_TESTING:BOOL=ON
+            * H4EX_BUILD_TESTING:BOOL=ON
             * BUILD_SHARED_LIBS:BOOL=[ON | OFF]
             * HDF_BUILD_FORTRAN:BOOL=[ON | OFF]
             * HDF_BUILD_JAVA:BOOL=[ON | OFF]
@@ -127,7 +127,7 @@ These steps are described in more detail below.
 
       2.2  Alternative command line example on Windows in c:\MyHDFstuff\HDF4Examples\build directory:
 
-           cmake -G "Visual Studio 19" -DBUILD_TESTING:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=ON ..
+           cmake -G "Visual Studio 19" -DH4EX_BUILD_TESTING:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=ON ..
 
    3. Build HDF4 examples
 
@@ -168,7 +168,7 @@ These steps are described in more detail below.
 
 
 ========================================================================
-III. Using HDF5 Libraries with Visual Studio 2008 (no longer supported)
+III. Using HDF4 Libraries with Visual Studio 2008 (no longer supported)
 ========================================================================
 
    1. Set up path for external libraries and headers
